@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=21" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body>
 
@@ -347,12 +347,78 @@
           </div>
         </div>
       </div>
+
+      <!-- Equipment Comparison -->
+      <div class="card" style="margin-top:16px;">
+        <h3>Equipment Comparison</h3>
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+          <button id="addToCompareBtn" style="padding:6px 12px; background:var(--cyan); color:var(--bg); border:none; border-radius:6px; cursor:pointer; font-size:0.85rem;">Add Current to Compare</button>
+          <button id="clearCompareBtn" style="padding:6px 12px; background:var(--bg-card); color:var(--text); border:1px solid var(--border); border-radius:6px; cursor:pointer; font-size:0.85rem;">Clear</button>
+        </div>
+        <div id="comparisonTable" style="overflow-x:auto;">
+          <div style="color:var(--text-dim); font-size:0.85rem; padding:12px; text-align:center;">Select equipment and click "Add to Compare" (max 3)</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <script src="minerals-data.js?v=21"></script>
-  <script src="crafting-data.js?v=21"></script>
-  <script src="calculator.js?v=21"></script>
-  <script src="crafting.js?v=21"></script>
+  <script src="minerals-data.js?v=22"></script>
+  <script src="crafting-data.js?v=22"></script>
+  <script src="calculator.js?v=22"></script>
+  <script src="crafting.js?v=22"></script>
+  <script src="comparison.js?v=1"></script>
+  <script>
+    // Re-calculate Optimal Dig Strategy when Luck/Capacity change
+    function refreshBuildDetails() {
+      const buildKey = document.getElementById('buildSelect')?.value;
+      if (!buildKey || buildKey === 'none') return;
+      // BUILDS is accessible from the same script context
+      const build = typeof BUILDS !== 'undefined' ? BUILDS[buildKey] : null;
+      if (!build) return;
+
+      // Re-calculate with current input values
+      if (typeof window.showBuildDetails === 'function') {
+        window.showBuildDetails(build);
+      }
+    }
+
+    // Listen for changes on Luck and Capacity inputs
+    const luckInputEl = document.getElementById('luckInput');
+    const capacityInputEl = document.getElementById('capacityInput');
+    if (luckInputEl) {
+      luckInputEl.addEventListener('input', refreshBuildDetails);
+      luckInputEl.addEventListener('change', refreshBuildDetails);
+    }
+    if (capacityInputEl) {
+      capacityInputEl.addEventListener('input', refreshBuildDetails);
+      capacityInputEl.addEventListener('change', refreshBuildDetails);
+    }
+  </script>
+  <script>
+    // Re-calculate Optimal Dig Strategy when Luck/Capacity change
+    function refreshBuildDetails() {
+      const buildKey = document.getElementById('buildSelect')?.value;
+      if (!buildKey || buildKey === 'none') return;
+      const build = window.BUILDS?.[buildKey];
+      if (!build) return;
+
+      // Re-calculate with current input values
+      if (typeof window.showBuildDetails === 'function') {
+        window.showBuildDetails(build);
+      }
+    }
+
+    // Listen for changes on Luck and Capacity inputs
+    const luckInput = document.getElementById('luckInput');
+    const capacityInput = document.getElementById('capacityInput');
+    if (luckInput) {
+      luckInput.addEventListener('input', refreshBuildDetails);
+      luckInput.addEventListener('change', refreshBuildDetails);
+    }
+    if (capacityInput) {
+      capacityInput.addEventListener('input', refreshBuildDetails);
+      capacityInput.addEventListener('change', refreshBuildDetails);
+    }
+  </script>
 </body>
 </html>

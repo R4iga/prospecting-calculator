@@ -275,14 +275,20 @@ function populateLocations() {
    MAIN CALC
 ------------------------- */
 
-function calculate() {
-  const selectedMineral = mineralSelect?.value;
-  const m = minerals.find(x => x.mineral === selectedMineral) ||
-            filtered.find(x => x.mineral === selectedMineral);
-
-  const luck = Math.max(0, Number(luckInput?.value) || 0);
-  const C = Math.max(1, Number(capacityInput?.value) || 1);
-  const cycleSeconds = getCycleSeconds(C);
+function calculate() {
+
+  const selectedMineral = mineralSelect?.value;
+
+  const m = minerals.find(x => x.mineral === selectedMineral) ||
+
+            filtered.find(x => x.mineral === selectedMineral);
+
+
+  const luck = Math.max(0, Number(luckInput?.value) || 0);
+
+  const C = Math.max(1, Number(capacityInput?.value) || 1);
+
+  const cycleSeconds = getCycleSeconds(C);
 
   // Header labels
   const mineralLabel = document.getElementById("mineralLabel");
@@ -557,9 +563,9 @@ function rarityColor(r){
 /* -------------------------
    BUILDS DATA & LOGIC
 ------------------------- */
-
-const BUILDS = {
-  "luck3swamp": {
+const BUILDS = {
+
+  "luck3swamp": {
     name: "Luck 3 Swamp (III.B)",
     luck: 3,
     locationKeyword: "swamp",
@@ -823,10 +829,13 @@ function applyBuild(){
     const match = options.find(opt => opt.textContent.toLowerCase().includes(build.locationKeyword.toLowerCase()));
     if (match) locationSelect.value = match.value;
   }
-  showBuildDetails(build);
-  if (panel) panel.style.display = "block";
-  if (typeof computeAll === "function") computeAll();
-}
+  showBuildDetails(build);
+
+  if (panel) panel.style.display = "block";
+
+  if (typeof computeAll === "function") computeAll();
+
+}
 
 function extractEquipName(str){
   let name = str.replace(/[\dx/]+\s*/, "").trim();
@@ -1092,8 +1101,6 @@ function findMultiMaterialLocations(build) {
 }
 
 if (buildSelect) buildSelect.addEventListener("change", applyBuild);
-
-// Animated counters
 function animateValue(el, start, end, duration, decimalPlaces) {
   if (!el) return;
   const startTime = performance.now();
