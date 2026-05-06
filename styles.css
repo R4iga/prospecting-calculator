@@ -1078,9 +1078,8 @@ body::after {
 ======================= */
 
 .stickyResults {
-  position: sticky;
-  top: 16px;
-  z-index: 10;
+  position: static;
+  z-index: auto;
   margin-bottom: 14px;
 }
 
