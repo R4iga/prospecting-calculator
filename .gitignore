@@ -1,0 +1,25 @@
+# Ignore temp files
+*.log
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# Ignore test files
+test_*.html
+wiki_*.html
+scrape_*.py
+scrape_*.ps1
+*_INSTRUCTIONS.md
+check_*.py
+verify_*.py
+
+# Ignore node_modules if any
+node_modules/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo

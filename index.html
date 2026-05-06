@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prospecting Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=18" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topBar">
+    <div class="logo"></div>
+    <div class="topSearch">
+      <input id="mineralSearch" type="text" placeholder="Search minerals..." autocomplete="off" />
+      <select id="rarityFilter">
+        <option value="all">All</option>
+        <option value="common">Common</option>
+        <option value="uncommon">Uncommon</option>
+        <option value="rare">Rare</option>
+        <option value="epic">Epic</option>
+        <option value="legendary">Legendary</option>
+        <option value="mythic">Mythic</option>
+        <option value="exotic">Exotic</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- SELECTOR BAR -->
+  <div class="selectorBar">
+    <select id="mineralSelect"></select>
+    <select id="locationSelect"></select>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="mainArea">
+
+    <!-- SETTINGS SIDEBAR -->
+    <div class="settingsCard">
+      <h3>Settings</h3>
+
+      <!-- Build Selector -->
+      <div class="field">
+        <label>Build</label>
+        <select id="buildSelect">
+          <option value="none">None</option>
+          <optgroup label="Stage I - Snowy Isle">
+            <option value="luckEfficiencyI">Luck Efficiency I.</option>
+            <option value="sizeBoostI">Size Boost I.</option>
+          </optgroup>
+          <optgroup label="Stage II - Overgrown Caves">
+            <option value="luckEfficiencyII">Luck Efficiency II.</option>
+            <option value="sizeBoostII">Size Boost II.</option>
+          </optgroup>
+          <optgroup label="Stage III - Swamp">
+            <option value="luckEfficiencyIIIB">Luck Efficiency III.B (w/ RoC)</option>
+            <option value="luckEfficiencyIIIA">Luck Efficiency III.A (no RoC)</option>
+            <option value="hybridIII">Hybrid III.</option>
+            <option value="sizeBoostIII">Size Boost III.</option>
+            <option value="itemsFarmingIII">Items Farming III.</option>
+            <option value="treasureMapIII">Treasure/Geode III.</option>
+          </optgroup>
+          <optgroup label="Stage IV - Meteor">
+            <option value="luckEfficiencyIVB">Luck Efficiency IV.B (w/ Ascended)</option>
+            <option value="luckEfficiencyIVA">Luck Efficiency IV.A (no Ascended)</option>
+            <option value="hybridIVB">Hybrid IV.B (w/ Ascended)</option>
+            <option value="sizeBoostIV">Size Boost IV.</option>
+            <option value="itemsFarmingIV">Items Farming IV.</option>
+            <option value="moneyPrinter">Money Printer</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Core Stats -->
+      <div class="field">
+        <label>Luck</label>
+        <input type="number" id="luckInput" min="0" value="10" />
+      </div>
+      <div class="field">
+        <label>Pan Capacity</label>
+        <input type="number" id="capacityInput" min="1" value="50" />
+      </div>
+
+      <!-- Method -->
+      <div class="field">
+        <label>Method</label>
+        <select id="timeMethod">
+          <option value="autopan">Autopan / Macro</option>
+          <option value="sand">Sandshaking</option>
+        </select>
+      </div>
+
+      <!-- Advanced (collapsible) -->
+      <details class="advancedSettings">
+        <summary>Advanced Settings</summary>
+        <div class="field">
+          <label>Digs to fill</label>
+          <input type="number" id="nInput" min="0" step="1" value="3" />
+        </div>
+        <div class="pair">
+          <div class="field">
+            <label>Dig speed %</label>
+            <input type="number" id="dInput" min="0.01" step="0.01" value="100" />
+          </div>
+          <div class="field">
+            <label>Shake speed %</label>
+            <input type="number" id="shakeSpeedInput" min="0" step="1" value="500" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Shake strength</label>
+          <input type="number" id="sInput" min="0" step="0.01" value="1" />
+        </div>
+        <div class="field">
+          <label>Farming target</label>
+          <input type="number" id="farmTarget" min="1" step="1" value="100" />
+        </div>
+      </details>
+
+      <div class="note" id="rollsNote">—</div>
+    </div>
+
+    <!-- MAIN CONTENT RIGHT -->
+    <div class="contentRight">
+
+      <!-- Build Details (shown when build selected) -->
+      <div id="buildDetails" class="card" style="display:none;"></div>
+
+      <!-- RESULTS (sticky) -->
+      <div class="card resultsCard stickyResults">
+        <div class="resultsHeader">
+          <div class="badge">
+            <span class="dot" id="rarityDot"></span>
+            <span id="mineralLabel">Select a mineral</span>
+            <span class="rarityTag" id="rarityTag">—</span>
+          </div>
+          <div class="badge">Best: <b id="bestLocation">—</b></div>
+        </div>
+
+        <div class="metrics threeCol">
+          <div class="metric">
+            <div class="k" title="Chance of finding the mineral per dig attempt = 1-(1-base%)^(luck×√strength)">Chance / attempt</div>
+            <div class="v" id="chanceCell">—</div>
+            <div class="s" id="oneInAttempt">—</div>
+          </div>
+          <div class="metric">
+            <div class="k" title="Average number of minerals found per dig attempt">Expected finds</div>
+            <div class="v" id="expectedCell">—</div>
+            <div class="s" id="expectedSub">—</div>
+          </div>
+          <div class="metric">
+            <div class="k" title="Probability of finding at least one mineral in a single attempt">At least one</div>
+            <div class="v" id="atLeastOneCell">—</div>
+            <div class="s" id="atLeastSub">—</div>
+          </div>
+        </div>
+
+        <!-- FARMING GOAL -->
+        <div class="subSection">
+          <h3>Farming Goal</h3>
+          <div class="metrics threeCol">
+            <div class="metric">
+                <div class="k" title="Number of dig attempts needed to reach your farming target">Attempts needed</div>
+                <div class="v" id="farmAttempts">—</div>
+                <div class="s" id="farmAttemptsSub">—</div>
+              </div>
+              <div class="metric">
+                <div class="k" title="Estimated time to reach your farming target based on your dig speed">Est. time</div>
+                <div class="v" id="farmTime">—</div>
+                <div class="s" id="farmTimeSub">—</div>
+              </div>
+              <div class="metric">
+                <div class="k" title="Estimated total value of minerals you'll get from your farming target">Est. value</div>
+                <div class="v" id="farmValue">—</div>
+                <div class="s" id="farmValueSub">—</div>
+              </div>
+          </div>
+        </div>
+
+        <!-- REVERSE LUCK -->
+        <div class="subSection">
+          <h3>Required luck for target</h3>
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div style="flex:0 0 180px;">
+              <div class="field" style="margin:0;">
+                <label>Target % per attempt</label>
+                <input type="number" id="targetChance" min="0.1" max="99.9" step="0.1" value="50" />
+              </div>
+            </div>
+            <div style="flex:1;">
+              <div class="metric inlineMetric">
+                <div class="k">Luck needed</div>
+                <div class="v" id="reverseLuckResult">—</div>
+                <div class="s" id="reverseLuckSub">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card tableCard">
+        <h3>Location Breakdown</h3>
+        <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center;">
+          <label style="font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-dim); margin:0; white-space:nowrap;">Filter:</label>
+          <select id="locationFilter" style="flex:1; padding:7px 28px 7px 10px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; font-size:0.8rem; appearance:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234a4e6a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 8px center;">
+            <option value="all">All locations</option>
+          </select>
+        </div>
+        <div class="tableWrap">
+          <table class="table minimalTable">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th title="Base drop chance at this location">Base %</th>
+                <th title="1 in X digs for base chance">1 in</th>
+                <th title="Your chance per dig attempt = 1-(1-base%)^(luck×√strength)">Chance/att</th>
+                <th title="1 in X attempts with your stats">1 in (att)</th>
+                <th title="Attempts needed for 50% probability">50%</th>
+                <th title="Attempts needed for 90% probability">90%</th>
+                <th title="Attempts using pity formula for 99%">99%</th>
+                <th title="Estimated time for 50% probability">Time 50%</th>
+                <th title="Estimated time for 90% probability">Time 90%</th>
+                <th title="Estimated time using pity formula for 99%">Time 99%</th>
+              </tr>
+            </thead>
+            <tbody id="allLocationsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EQUIPMENT SECTION -->
+  <div class="sectionDivider"></div>
+
+  <section class="toolsSection">
+    <div class="toolsHeader">
+      <h2>Equipment</h2>
+      <p>Select a piece to view materials, stats, and unlock details.</p>
+    </div>
+
+    <div class="equipLayout">
+      <div class="card equipFinder">
+        <h3>Equipment Finder</h3>
+        <div class="field">
+          <label>Search</label>
+          <input id="equipSearch" type="text" placeholder="Type to filter..." autocomplete="off" />
+        </div>
+        <div class="field">
+          <label>Rarity</label>
+          <select id="equipRarityFilter">
+            <option value="all">All</option>
+            <option value="common">Common</option>
+            <option value="uncommon">Uncommon</option>
+            <option value="rare">Rare</option>
+            <option value="epic">Epic</option>
+            <option value="legendary">Legendary</option>
+            <option value="mythical">Mythical</option>
+            <option value="exotic">Exotic</option>
+            <option value="ascended">Ascended</option>
+          </select>
+        </div>
+        <div class="field" id="quickAddContainer">
+          <label>Quick Add</label>
+          <div id="quickAddButtons"></div>
+        </div>
+        <div class="field">
+          <label>Select</label>
+          <select id="equipSelect"></select>
+        </div>
+      </div>
+
+      <div class="card equipDetails">
+        <h3>Details</h3>
+        <div class="equipBadges">
+          <div class="badge">
+            <span class="dot" id="equipRarityDot"></span>
+            <span id="equipLabel">Select equipment</span>
+            <span class="rarityTag" id="equipRarityTag">—</span>
+          </div>
+          <div class="badge"><b id="equipAvailability">—</b></div>
+        </div>
+        <div class="metrics threeCol">
+          <div class="metric">
+            <div class="k">Materials</div>
+            <div class="v" id="equipMaterialsCount">—</div>
+            <div class="s" id="equipMaterialsHint">—</div>
+          </div>
+          <div class="metric">
+            <div class="k">Unlock</div>
+            <div class="v" id="equipUnlockType">—</div>
+            <div class="s" id="equipUnlockHint">—</div>
+          </div>
+          <div class="metric">
+            <div class="k">Cost</div>
+            <div class="v" id="equipCost">—</div>
+            <div class="s" id="equipSlot">—</div>
+          </div>
+        </div>
+
+        <div class="statsPanel">
+          <div class="statsHeader">
+            <h3>Stats</h3>
+            <div class="statsToggle">
+              <button id="statsBaseBtn" class="statsBtn active">Base</button>
+              <button id="statsStarBtn" class="statsBtn">6★</button>
+            </div>
+          </div>
+          <div class="statsBlock">
+            <h4 class="statsSubheading">Base</h4>
+            <div id="statsGrid" class="statsGrid">
+              <div class="note">Select equipment to view</div>
+            </div>
+          </div>
+          <div class="statsBlock">
+            <h4 class="statsSubheading">Mutations</h4>
+            <div class="mutationGrid">
+              <div class="mutationCol">
+                <span class="mutationLabel">Silver x1.1</span>
+                <div id="statsGrid-m110" class="statsGrid small"></div>
+              </div>
+              <div class="mutationCol">
+                <span class="mutationLabel">Gold x1.2</span>
+                <div id="statsGrid-m120" class="statsGrid small"></div>
+              </div>
+              <div class="mutationCol">
+                <span class="mutationLabel">Diamond x1.35</span>
+                <div id="statsGrid-m135" class="statsGrid small"></div>
+              </div>
+              <div class="mutationCol">
+                <span class="mutationLabel">Festive x1.4</span>
+                <div id="statsGrid-m140" class="statsGrid small"></div>
+              </div>
+              <div class="mutationCol">
+                <span class="mutationLabel">Prismatic x1.6</span>
+                <div id="statsGrid-m160" class="statsGrid small"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="minerals-data.js?v=18"></script>
+  <script src="crafting-data.js?v=18"></script>
+  <script src="calculator.js?v=18"></script>
+  <script src="crafting.js?v=18"></script>
+</body>
+</html>
