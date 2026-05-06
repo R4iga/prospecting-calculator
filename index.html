@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=20" />
 </head>
 <body>
 
@@ -29,18 +29,22 @@
     </div>
   </div>
 
-  <!-- SELECTOR BAR -->
-  <div class="selectorBar">
-    <select id="mineralSelect"></select>
-    <select id="locationSelect"></select>
-  </div>
-
   <!-- MAIN CONTENT -->
   <div class="mainArea">
 
     <!-- SETTINGS SIDEBAR -->
     <div class="settingsCard">
       <h3>Settings</h3>
+
+      <!-- Mineral & Location Selector -->
+      <div class="field">
+        <label>Mineral</label>
+        <select id="mineralSelect"></select>
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <select id="locationSelect"></select>
+      </div>
 
       <!-- Build Selector -->
       <div class="field">
@@ -346,9 +350,9 @@
     </div>
   </section>
 
-  <script src="minerals-data.js?v=19"></script>
-  <script src="crafting-data.js?v=19"></script>
-  <script src="calculator.js?v=19"></script>
-  <script src="crafting.js?v=19"></script>
+  <script src="minerals-data.js?v=20"></script>
+  <script src="crafting-data.js?v=20"></script>
+  <script src="calculator.js?v=20"></script>
+  <script src="crafting.js?v=20"></script>
 </body>
 </html>
