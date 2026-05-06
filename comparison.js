@@ -23,13 +23,14 @@ function renderComparison() {
     return;
   }
 
-  var html = '<table style="width:100%;border-collapse:collapse;font-size:0.75rem;line-height:1.3;">';
+  var html = '<table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:0.7rem;line-height:1.3;">';
+  html += '<colgroup><col style="width:25%;"><col style="width:25%;"><col style="width:25%;"><col style="width:25%;"></colgroup>';
   
   // Header
   html += '<tr style="background:var(--bg-card);">';
-  html += '<th style="padding:4px 6px;">Stat</th>';
+  html += '<th style="padding:4px 6px;width:25%;">Stat</th>';
   compareItems.forEach(function(item) {
-    html += '<th style="padding:4px 6px;text-align:center;color:var(--cyan);">' + item.name + '</th>';
+    html += '<th style="padding:4px 6px;text-align:center;color:var(--cyan);width:25%;">' + item.name + '</th>';
   });
   html += '</tr>';
 
