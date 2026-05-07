@@ -41,24 +41,12 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(800px 600px at 20% 20%, rgba(0,229,255,0.05), transparent 60%),
-    radial-gradient(700px 500px at 80% 15%, rgba(255,45,149,0.04), transparent 60%),
-    radial-gradient(600px 400px at 50% 80%, rgba(0,255,106,0.03), transparent 60%),
-    radial-gradient(500px 500px at 10% 90%, rgba(155,77,255,0.03), transparent 60%),
-    radial-gradient(900px 300px at 90% 85%, rgba(255,214,0,0.02), transparent 60%);
-  animation: bgShift 20s ease-in-out infinite alternate;
+  background: url('pink_glow.gif') center/cover no-repeat;
   filter: blur(25px);
   pointer-events: none;
-}
+  }
 
-@keyframes bgShift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-10px, 5px); }
-  100% { transform: translate(5px, -3px); }
-}
-
-body::after {
+  body::after {
   content: '';
   position: fixed;
   inset: 0;
