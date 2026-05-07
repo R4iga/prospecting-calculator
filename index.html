@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body>
+  <div id="loader"><div class="spinner"></div></div>
   <div id="bg-interactive"></div>
+  <div id="particles"></div>
 
   <!-- TOP BAR -->
   <div class="topBar">
@@ -28,6 +30,7 @@
         <option value="exotic">Exotic</option>
       </select>
     </div>
+    <button id="soundToggle" class="sound-toggle">🔇</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -446,6 +449,77 @@
       }
       animate();
     })();
+  <script>
+    // Particles
+    (function() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      const colors = ['var(--pink)', 'var(--cyan)', 'var(--purple)'];
+      for (let i = 0; i < 60; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        p.style.cssText = 'width: ' + size + 'px; height: ' + size + 'px; left: ' + Math.random() * 100 + 'vw; background: ' + colors[Math.floor(Math.random() * colors.length)] + '; animation-delay: ' + Math.random() * 3 + 's; animation-duration: ' + (Math.random() * 2 + 2) + 's;';
+        container.appendChild(p);
+      }
+    })();
+
+    // Sound Toggle
+    (function() {
+      const btn = document.getElementById('soundToggle');
+      if (!btn) return;
+      let enabled = localStorage.getItem('soundEnabled') === 'true';
+      btn.textContent = enabled ? '🔊' : '🔇';
+      btn.classList.toggle('active', enabled);
+      window.playSound = function() {
+        if (!enabled) return;
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.frequency.value = 800;
+          gain.gain.setValueAtTime(0.1, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.1);
+        } catch(e) {}
+      };
+      btn.addEventListener('click', function() {
+        enabled = !enabled;
+        localStorage.setItem('soundEnabled', enabled);
+        btn.textContent = enabled ? '🔊' : '🔇';
+        btn.classList.toggle('active', enabled);
+        window.playSound();
+      });
+      document.addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+          window.playSound();
+        }
+      });
+    })();
+
+    // Loader
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var loader = document.getElementById('loader');
+        if (loader) loader.classList.add('hidden');
+      }, 500);
+    });
+
+    // Profit Animation
+    var originalRefreshBuildDetails = refreshBuildDetails;
+    refreshBuildDetails = function() {
+      originalRefreshBuildDetails();
+      var profitEl = document.querySelector('.total-profit, #totalProfit, [class*="profit"]');
+      if (profitEl) {
+        profitEl.classList.add('profit-updated');
+        setTimeout(function() {
+          profitEl.classList.remove('profit-updated');
+        }, 300);
+      }
+    };
   </script>
 
 </body>
