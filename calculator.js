@@ -1,17 +1,16 @@
-﻿let minerals = [];
-let filtered = [];
-let allLocationNames = new Set();
-
-const mineralSelect   = document.getElementById("mineralSelect");
-const mineralSearch   = document.getElementById("mineralSearch");
-const rarityFilter    = document.getElementById("rarityFilter");
-const locationSelect  = document.getElementById("locationSelect");
-const locationFilter  = document.getElementById("locationFilter");
-const luckInput       = document.getElementById("luckInput");
-const capacityInput   = document.getElementById("capacityInput");
-const farmTargetInput = document.getElementById("farmTarget");
-const targetChanceInput = document.getElementById("targetChance");
-const buildSelect     = document.getElementById("buildSelect");
+﻿let minerals = [];
+let filtered = [];
+let allLocationNames = new Set();
+window.mineralSelect   = document.getElementById("mineralSelect");
+window.mineralSearch   = document.getElementById("mineralSearch");
+window.rarityFilter    = document.getElementById("rarityFilter");
+window.locationSelect  = document.getElementById("locationSelect");
+window.locationFilter  = document.getElementById("locationFilter");
+window.luckInput       = document.getElementById("luckInput");
+window.capacityInput   = document.getElementById("capacityInput");
+window.farmTargetInput = document.getElementById("farmTarget");
+window.targetChanceInput = document.getElementById("targetChance");
+window.buildSelect     = document.getElementById("buildSelect");
 
 const timeMethod      = document.getElementById("timeMethod");
 const shakeSpeedInput = document.getElementById("shakeSpeedInput");

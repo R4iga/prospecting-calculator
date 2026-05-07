@@ -7,15 +7,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="styles.css?v=25" />
 </head>
 <body>
-  <div id="loader"><div class="spinner"></div></div>
+  <div id="loader" style="position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;"><div class="spinner"></div></div>
+  <script>
+    setTimeout(function() {
+      var l = document.getElementById('loader');
+      if(l) { l.style.opacity='0'; setTimeout(function(){l.style.display='none'},300); }
+      document.body.classList.add('loaded');
+    }, 500);
+  </script>
   <div id="bg-interactive"></div>
   <div id="particles"></div>
 
   <!-- TOP BAR -->
-  <div class="topBar">
+  <div class="topBar fade-in">
     <div class="logo"></div>
     <div class="topSearch">
       <input id="mineralSearch" type="text" placeholder="Search minerals..." autocomplete="off" />
@@ -30,11 +37,10 @@
         <option value="exotic">Exotic</option>
       </select>
     </div>
-    <button id="soundToggle" class="sound-toggle">🔇</button>
   </div>
 
   <!-- MAIN CONTENT -->
-  <div class="mainArea">
+  <div class="mainArea fade-in">
 
     <!-- SETTINGS SIDEBAR -->
     <div class="settingsCard">
@@ -246,7 +252,7 @@
   <!-- EQUIPMENT SECTION -->
   <div class="sectionDivider"></div>
 
-  <section class="toolsSection">
+  <section class="toolsSection fade-in">
     <div class="toolsHeader">
       <h2>Equipment</h2>
     </div>
@@ -366,151 +372,17 @@
     </div>
   </section>
 
-  <script src="minerals-data.js?v=22"></script>
-  <script src="crafting-data.js?v=22"></script>
-  <script src="calculator.js?v=22"></script>
-  <script src="crafting.js?v=22"></script>
-  <script src="comparison.js?v=1"></script>
-  <script>
-    // Re-calculate Optimal Dig Strategy when Luck/Capacity change
-    function refreshBuildDetails() {
-      const buildKey = document.getElementById('buildSelect')?.value;
-      if (!buildKey || buildKey === 'none') return;
-      // BUILDS is accessible from the same script context
-      const build = typeof BUILDS !== 'undefined' ? BUILDS[buildKey] : null;
-      if (!build) return;
-
-      // Re-calculate with current input values
-      if (typeof window.showBuildDetails === 'function') {
-        window.showBuildDetails(build);
-      }
-    }
-
-    // Listen for changes on Luck and Capacity inputs
-    const luckInputEl = document.getElementById('luckInput');
-    const capacityInputEl = document.getElementById('capacityInput');
-    if (luckInputEl) {
-      luckInputEl.addEventListener('input', refreshBuildDetails);
-      luckInputEl.addEventListener('change', refreshBuildDetails);
-    }
-    if (capacityInputEl) {
-      capacityInputEl.addEventListener('input', refreshBuildDetails);
-      capacityInputEl.addEventListener('change', refreshBuildDetails);
-    }
-  </script>
-  <script>
-    // Re-calculate Optimal Dig Strategy when Luck/Capacity change
-    function refreshBuildDetails() {
-      const buildKey = document.getElementById('buildSelect')?.value;
-      if (!buildKey || buildKey === 'none') return;
-      const build = window.BUILDS?.[buildKey];
-      if (!build) return;
-
-      // Re-calculate with current input values
-      if (typeof window.showBuildDetails === 'function') {
-        window.showBuildDetails(build);
-      }
-    }
-
-    // Listen for changes on Luck and Capacity inputs
-    const luckInput = document.getElementById('luckInput');
-    const capacityInput = document.getElementById('capacityInput');
-    if (luckInput) {
-      luckInput.addEventListener('input', refreshBuildDetails);
-      luckInput.addEventListener('change', refreshBuildDetails);
-    }
-    if (capacityInput) {
-      capacityInput.addEventListener('input', refreshBuildDetails);
-      capacityInput.addEventListener('change', refreshBuildDetails);
-    }
-  </script>
+  <script src="minerals-data.js?v=23"></script>
+  <script src="crafting-data.js?v=23"></script>
+  <script src="calculator.js?v=23"></script>
+  <script src="crafting.js?v=23"></script>
+  <script src="comparison.js?v=2"></script>
 
   <script>
-    // Interactive background that follows mouse smoothly
-    (function() {
-      const bg = document.getElementById('bg-interactive');
-      if (!bg) return;
-
-      let currentX = 0, currentY = 0;
-      let targetX = 0, targetY = 0;
-
-      document.addEventListener('mousemove', function(e) {
-        // Calculate movement (-50 to 50 pixels)
-        targetX = (e.clientX / window.innerWidth - 0.5) * 100;
-        targetY = (e.clientY / window.innerHeight - 0.5) * 100;
-      });
-
-      // Smooth animation loop
-      function animate() {
-        currentX += (targetX - currentX) * 0.05;
-        currentY += (targetY - currentY) * 0.05;
-        bg.style.transform = 'translate(' + currentX + 'px, ' + currentY + 'px)';
-        requestAnimationFrame(animate);
-      }
-      animate();
-    })();
-  <script>
-    // Particles
-    (function() {
-      const container = document.getElementById('particles');
-      if (!container) return;
-      const colors = ['var(--pink)', 'var(--cyan)', 'var(--purple)'];
-      for (let i = 0; i < 60; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        const size = Math.random() * 3 + 1;
-        p.style.cssText = 'width: ' + size + 'px; height: ' + size + 'px; left: ' + Math.random() * 100 + 'vw; background: ' + colors[Math.floor(Math.random() * colors.length)] + '; animation-delay: ' + Math.random() * 3 + 's; animation-duration: ' + (Math.random() * 2 + 2) + 's;';
-        container.appendChild(p);
-      }
-    })();
-
-    // Sound Toggle
-    (function() {
-      const btn = document.getElementById('soundToggle');
-      if (!btn) return;
-      let enabled = localStorage.getItem('soundEnabled') === 'true';
-      btn.textContent = enabled ? '🔊' : '🔇';
-      btn.classList.toggle('active', enabled);
-      window.playSound = function() {
-        if (!enabled) return;
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.frequency.value = 800;
-          gain.gain.setValueAtTime(0.1, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.1);
-        } catch(e) {}
-      };
-      btn.addEventListener('click', function() {
-        enabled = !enabled;
-        localStorage.setItem('soundEnabled', enabled);
-        btn.textContent = enabled ? '🔊' : '🔇';
-        btn.classList.toggle('active', enabled);
-        window.playSound();
-      });
-      document.addEventListener('click', function(e) {
-        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-          window.playSound();
-        }
-      });
-    })();
-
-    // Loader
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        var loader = document.getElementById('loader');
-        if (loader) loader.classList.add('hidden');
-      }, 500);
-    });
-
     // Profit Animation
-    var originalRefreshBuildDetails = refreshBuildDetails;
-    refreshBuildDetails = function() {
+    window.refreshBuildDetails = window.refreshBuildDetails || function() {};
+    var originalRefreshBuildDetails = window.refreshBuildDetails;
+    window.refreshBuildDetails = function() {
       originalRefreshBuildDetails();
       var profitEl = document.querySelector('.total-profit, #totalProfit, [class*="profit"]');
       if (profitEl) {
@@ -520,17 +392,87 @@
         }, 300);
       }
     };
+    </script>
+
+    <!-- Feedback -->
+    <div class="card fade-in" style="margin-top:16px;">
+      <h3>Feedback</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <a href="https://github.com/R4iga/prospecting-calculator/issues/new" target="_blank" style="padding:8px 12px; background:var(--bg-card); color:var(--text); text-decoration:none; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; text-align:center;">Report Bug / Suggest Feature</a>
+        <a href="https://github.com/R4iga/prospecting-calculator" target="_blank" style="padding:8px 12px; background:var(--cyan); color:var(--bg); text-decoration:none; border-radius:6px; font-size:0.85rem; text-align:center;">View on GitHub</a>
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+    // Ultra-smooth optimized parallax
+    (function() {
+      // Cache DOM elements once
+      const els = {
+        topBar: document.querySelectorAll('.topBar'),
+        cards: document.querySelectorAll('.card'),
+        tools: document.querySelectorAll('.toolsSection'),
+        bg: document.getElementById('bg-interactive'),
+        dividers: document.querySelectorAll('.sectionDivider'),
+        headings: document.querySelectorAll('h2, h3'),
+        fields: document.querySelectorAll('.field'),
+        tables: document.querySelectorAll('.tableWrap')
+      };
+      
+      const range = 80;
+      const lerp = 0.28;
+      
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      let ticking = false;
+      
+      // Throttled mousemove
+      document.addEventListener('mousemove', function(e) {
+        targetX = (e.clientX / window.innerWidth - 0.5) * range;
+        targetY = (e.clientY / window.innerHeight - 0.5) * range;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      });
+      
+      function update() {
+        currentX += (targetX - currentX) * lerp;
+        currentY += (targetY - currentY) * lerp;
+        
+        const mx = currentX.toFixed(2);
+        const my = currentY.toFixed(2);
+        
+        // Update each element type with its multiplier
+        updateElements(els.topBar, mx, my, 0.2);
+        updateElements(els.cards, mx, my, 0.15);
+        updateElements(els.tools, mx, my, 0.18);
+        updateElements(els.dividers, mx, my, 0.1);
+        updateElements(els.headings, mx, my, 0.12);
+        updateElements(els.fields, mx, my, 0.08);
+        updateElements(els.tables, mx, my, 0.1);
+        
+        if (els.bg) {
+          els.bg.style.transform = 'translate3d(' + (mx * 4) + 'px, ' + (my * 4) + 'px, 0)';
+        }
+        
+        ticking = false;
+      }
+      
+      function updateElements(elements, x, y, mult) {
+        const tx = (x * mult).toFixed(2);
+        const ty = (y * mult).toFixed(2);
+        elements.forEach(function(el) {
+          el.style.transform = 'translate3d(' + tx + 'px, ' + ty + 'px, 0)';
+        });
+      }
+      
+      // Initial frame
+      requestAnimationFrame(update);
+    })();
   </script>
 
 </body>
 </html>
-
-      <!-- Feedback -->
-      <div class="card" style="margin-top:16px;">
-        <h3>Feedback</h3>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <a href="https://github.com/R4iga/prospecting-calculator/issues/new" target="_blank" style="padding:8px 12px; background:var(--bg-card); color:var(--text); text-decoration:none; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; text-align:center;">Report Bug / Suggest Feature</a>
-          <a href="https://github.com/R4iga/prospecting-calculator" target="_blank" style="padding:8px 12px; background:var(--cyan); color:var(--bg); text-decoration:none; border-radius:6px; font-size:0.85rem; text-align:center;">View on GitHub</a>
-        </div>
-      </div>
 
