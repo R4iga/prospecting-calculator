@@ -17,6 +17,34 @@
       if(l) { l.style.opacity='0'; setTimeout(function(){l.style.display='none'},300); }
       document.body.classList.add('loaded');
     }, 500);
+
+    // Auto-load build from URL hash
+    if (window.location.hash && window.location.hash.startsWith('#build=')) {
+      var buildCode = decodeURIComponent(window.location.hash.substring(7));
+      setTimeout(function() {
+        if (window.BuildBuilder) {
+          var success = window.BuildBuilder.loadFromCode(buildCode);
+          if (success && document.querySelector('.buildSection')) {
+            // Trigger UI update
+            var event = new Event('change');
+            var neckSelect = document.querySelector('[data-slot="neck"]');
+            var charmSelect = document.querySelector('[data-slot="charm"]');
+            if (neckSelect && BuildBuilder.slots.neck && BuildBuilder.slots.neck.name) {
+              neckSelect.value = BuildBuilder.slots.neck.name;
+              neckSelect.dispatchEvent(event);
+            }
+            if (charmSelect && BuildBuilder.slots.charm && BuildBuilder.slots.charm.name) {
+              charmSelect.value = BuildBuilder.slots.charm.name;
+              charmSelect.dispatchEvent(event);
+            }
+            // Update UI
+            if (typeof updateRingsUI === 'function') updateRingsUI();
+            if (typeof updateBuildStats === 'function') updateBuildStats();
+            alert('Build loaded from URL!');
+          }
+        }
+      }, 1000); // Wait for BuildBuilder to initialize
+    }
   </script>
   <div id="bg-interactive"></div>
   <div id="particles"></div>
@@ -35,8 +63,12 @@
         <option value="legendary">Legendary</option>
         <option value="mythic">Mythic</option>
         <option value="exotic">Exotic</option>
-      </select>
-    </div>
+        </select>
+        <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+          <input type="text" id="buildCodeInput" placeholder="Paste build code..." style="flex:1; min-width:150px; padding:6px 10px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.85rem;" />
+        </div>
+        <div id="codeOutput" style="width:100%; padding:8px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; font-size:0.8rem; color:var(--cyan); word-break:break-all; display:none; margin-top:8px;"></div>
+      </div>
   </div>
 
   <!-- MAIN CONTENT -->
