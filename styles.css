@@ -42,9 +42,9 @@ body::before {
   inset: 0;
   z-index: 0;
   background: url('pink_glow.gif') center/cover no-repeat;
-  filter: blur(25px);
+  filter: blur(80px);
   pointer-events: none;
-  }
+}
 
   body::after {
   content: '';
