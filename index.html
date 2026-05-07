@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body>
+  <div id="bg-interactive"></div>
 
   <!-- TOP BAR -->
   <div class="topBar">
@@ -420,6 +421,33 @@
       capacityInput.addEventListener('change', refreshBuildDetails);
     }
   </script>
+
+  <script>
+    // Interactive background that follows mouse smoothly
+    (function() {
+      const bg = document.getElementById('bg-interactive');
+      if (!bg) return;
+
+      let currentX = 0, currentY = 0;
+      let targetX = 0, targetY = 0;
+
+      document.addEventListener('mousemove', function(e) {
+        // Calculate movement (-50 to 50 pixels)
+        targetX = (e.clientX / window.innerWidth - 0.5) * 100;
+        targetY = (e.clientY / window.innerHeight - 0.5) * 100;
+      });
+
+      // Smooth animation loop
+      function animate() {
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+        bg.style.transform = 'translate(' + currentX + 'px, ' + currentY + 'px)';
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+
 </body>
 </html>
 

@@ -36,14 +36,19 @@ body {
   overflow-x: hidden;
 }
 
-body::before {
-  content: '';
+/* Interactive mouse-following background */
+#bg-interactive {
   position: fixed;
-  inset: 0;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
   z-index: 0;
   background: url('pink_glow.gif') center/cover no-repeat;
   filter: blur(80px);
+  opacity: 0.4;
   pointer-events: none;
+  transition: transform 0.3s ease-out;
 }
 
   body::after {
