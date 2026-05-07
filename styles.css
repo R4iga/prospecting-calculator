@@ -47,15 +47,15 @@ body::before {
     radial-gradient(600px 400px at 50% 80%, rgba(0,255,106,0.03), transparent 60%),
     radial-gradient(500px 500px at 10% 90%, rgba(155,77,255,0.03), transparent 60%),
     radial-gradient(900px 300px at 90% 85%, rgba(255,214,0,0.02), transparent 60%);
-  animation: bgShift 8s ease-in-out infinite alternate;
-  filter: blur(15px);
+  animation: bgShift 20s ease-in-out infinite alternate;
+  filter: blur(25px);
   pointer-events: none;
 }
 
 @keyframes bgShift {
   0% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 10px); }
-  100% { transform: translate(10px, -5px); }
+  50% { transform: translate(-10px, 5px); }
+  100% { transform: translate(5px, -3px); }
 }
 
 body::after {
