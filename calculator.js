@@ -1824,24 +1824,24 @@ function findBestLocationForMaterial(mineralName) {
 }
 
 function generateDigStrategy(build, currentLuck, digStrength) {
-  const { materials, usage } = calculateBuildMaterials(build);
-  const strategy = [];
-  const C = digStrength || 1;
-  const rollsPerAttempt = Math.min(currentLuck, Math.ceil(5 / bp)) * Math.sqrt(C);
-  Object.entries(materials).forEach(([mat, amount]) => {
-    const locInfo = findBestLocationForMaterial(mat);
-    if (!locInfo) {
-      strategy.push({ material: mat, amount, location: null, digs: null, timeMin: null, priority: 0 });
-      return;
-    }
-    const baseChance = locInfo.chance_percent / 100;
-    const chancePerAttempt = 1 - Math.pow(1 - baseChance, rollsPerAttempt);
-    if (chancePerAttempt <= 0) {
-      strategy.push({ material: mat, amount, location: locInfo.location, chance: locInfo.chance_percent, digs: Infinity, timeMin: Infinity, usageCount: (usage[mat] || []).length, priority: 0 });
-      return;
-    }
-    const expectedDigs = Math.ceil(amount / chancePerAttempt);
-    const digsPerSec = 2;
+   const { materials, usage } = calculateBuildMaterials(build);
+   const strategy = [];
+   const C = digStrength || 1;
+   Object.entries(materials).forEach(([mat, amount]) => {
+     const locInfo = findBestLocationForMaterial(mat);
+     if (!locInfo) {
+       strategy.push({ material: mat, amount, location: null, digs: null, timeMin: null, priority: 0 });
+       return;
+     }
+     const baseChance = locInfo.chance_percent / 100;
+     const rollsPerAttempt = Math.min(currentLuck, Math.ceil(5 / baseChance)) * Math.sqrt(C);
+     const chancePerAttempt = 1 - Math.pow(1 - baseChance, rollsPerAttempt);
+     if (chancePerAttempt <= 0) {
+       strategy.push({ material: mat, amount, location: locInfo.location, chance: locInfo.chance_percent, digs: Infinity, timeMin: Infinity, usageCount: (usage[mat] || []).length, priority: 0 });
+       return;
+     }
+     const expectedDigs = Math.ceil(amount / chancePerAttempt);
+     const digsPerSec = 2;
     const timeSec = expectedDigs / digsPerSec;
     const timeMin = Math.ceil(timeSec / 60);
     const usageCount = (usage[mat] || []).length;
