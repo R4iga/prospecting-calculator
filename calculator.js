@@ -2732,7 +2732,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     if (!m || !m.locations || !m.locations.length) return [];
     var luck = getLuck();
     var C = getCap();
-    var itemsPerPan = C * C;
+    var itemsPerPan = C * Math.sqrt(C);
     var locs = m.locations.map(function(l) {
       var base = Number(l.chance_percent) / 100;
       var expectedPerPan = itemsPerPan * base;
@@ -2823,7 +2823,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     });
 
     questResultCards.innerHTML = cardHTML;
-    var itemsPerPan = C * C;
+    var itemsPerPan = C * Math.sqrt(C);
     questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + itemsPerPan + ' items/pan avg | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
   }
 
