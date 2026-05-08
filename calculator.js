@@ -2818,9 +2818,8 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-          var baseOdds = Math.ceil(1 / o.basePercent);
-          var totalRolls = Math.sqrt(C) * luck;
-          var atLuckOdds = totalRolls > 0 ? Math.ceil(1 / (1 - Math.pow(1 - o.basePercent / 100, totalRolls))) : '—';
+          var baseOdds = Math.ceil(100 / o.basePercent);
+          var atLuckOdds = o.expectedPerPan > 0 ? Math.ceil(1 / o.expectedPerPan) : '—';
           cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | 1 in ' + baseOdds.toLocaleString() + ' base &rarr; 1 in ' + atLuckOdds + ' at-luck) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
