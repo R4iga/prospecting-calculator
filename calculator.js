@@ -1702,11 +1702,10 @@ function showBuildDetails(build){
     strategy.forEach(s => {
       const usageText = s.usageCount > 1 ? ` (used in ${s.usageCount} items)` : '';
       if (s.location) {
-        if (s.digs === Infinity) {
-          html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
-        } else {
-          html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
-        }
+if (s.digs === Infinity) {
+           html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
+         } else {
+           html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
       } else {
         html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? location unknown</li>`;
       }
@@ -1764,10 +1763,10 @@ document.addEventListener("click", (e) => {
     let text = `${build.name} - Dig Strategy (Luck: ${luckVal}, Strength: ${digC})\n`;
     strategy.forEach(s => {
       if (s.location) {
-        if (s.digs === Infinity) {
-          text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
-        } else {
-          text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
+if (s.digs === Infinity) {
+           text += `${s.amount} / ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
+         } else {
+           text += `${s.amount} / ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
         }
       } else {
         text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? location unknown\n`;
