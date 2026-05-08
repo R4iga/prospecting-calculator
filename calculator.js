@@ -2714,7 +2714,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
   function getLuck() { return Math.max(0, Number(document.getElementById('luckInput') && document.getElementById('luckInput').value) || 0); }
   function getCap() { return Math.max(1, Number(document.getElementById('capacityInput') && document.getElementById('capacityInput').value) || 1); }
 
-  var SEASONAL_KEYWORDS = ['Seasonal', 'Void', 'Hollow', 'Event', 'Limited', 'North Pole', 'Timelocked', 'Starfall', 'Inferno', 'Frozen'];
+  var SEASONAL_KEYWORDS = ['Seasonal', 'Void', 'Hollow', 'Event', 'Limited', 'North Pole', 'Timelocked', 'Starfall'];
   var blacklistEnabled = false;
 
   function isBlacklisted(locationName) {
