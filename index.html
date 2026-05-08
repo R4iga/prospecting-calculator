@@ -52,16 +52,16 @@
     <div class="logo"></div>
     <div class="topSearch">
       <input id="mineralSearch" type="text" placeholder="Search minerals..." autocomplete="off" />
-      <select id="rarityFilter">
-        <option value="all">All</option>
-        <option value="common">Common</option>
-        <option value="uncommon">Uncommon</option>
-        <option value="rare">Rare</option>
-        <option value="epic">Epic</option>
-        <option value="legendary">Legendary</option>
-        <option value="mythic">Mythic</option>
-        <option value="exotic">Exotic</option>
-        </select>
+<select id="rarityFilter" class="c-cool rarity-opt">
+        <option data-rarity="common" value="all">All</option>
+        <option data-rarity="common" value="common">Common</option>
+        <option data-rarity="uncommon" value="uncommon">Uncommon</option>
+        <option data-rarity="rare" value="rare">Rare</option>
+        <option data-rarity="epic" value="epic">Epic</option>
+        <option data-rarity="legendary" value="legendary">Legendary</option>
+        <option data-rarity="mythic" value="mythic">Mythic</option>
+        <option data-rarity="exotic" value="exotic">Exotic</option>
+      </select>
 
       </div>
   </div>
@@ -76,27 +76,27 @@
       <!-- Mineral & Location Selector -->
       <div class="field">
         <label>Mineral</label>
-        <select id="mineralSelect"></select>
+        <select id="mineralSelect" class="c-cool"></select>
       </div>
       <div class="field">
         <label>Location</label>
-        <select id="locationSelect"></select>
+        <select id="locationSelect" class="c-cool"></select>
       </div>
 
-      <!-- Build Selector -->
+<!-- Build Selector -->
       <div class="field">
         <label>Build</label>
-        <select id="buildSelect">
+        <select id="buildSelect" class="c-cool">
           <option value="none">None</option>
-          <optgroup label="Stage I - Snowy Isle">
+          <optgroup label="Stage I">
             <option value="luckEfficiencyI">Luck Efficiency I.</option>
             <option value="sizeBoostI">Size Boost I.</option>
           </optgroup>
-          <optgroup label="Stage II - Overgrown Caves">
+          <optgroup label="Stage II">
             <option value="luckEfficiencyII">Luck Efficiency II.</option>
             <option value="sizeBoostII">Size Boost II.</option>
           </optgroup>
-          <optgroup label="Stage III - Swamp">
+          <optgroup label="Stage III">
             <option value="luckEfficiencyIIIB">Luck Efficiency III.B (w/ RoC)</option>
             <option value="luckEfficiencyIIIA">Luck Efficiency III.A (no RoC)</option>
             <option value="hybridIII">Hybrid III.</option>
@@ -104,7 +104,7 @@
             <option value="itemsFarmingIII">Items Farming III.</option>
             <option value="treasureMapIII">Treasure/Geode III.</option>
           </optgroup>
-          <optgroup label="Stage IV - Meteor">
+          <optgroup label="Stage IV">
             <option value="luckEfficiencyIVB">Luck Efficiency IV.B (w/ Ascended)</option>
             <option value="luckEfficiencyIVA">Luck Efficiency IV.A (no Ascended)</option>
             <option value="hybridIVB">Hybrid IV.B (w/ Ascended)</option>
@@ -128,7 +128,7 @@
       <!-- Method -->
       <div class="field">
         <label>Method</label>
-        <select id="timeMethod">
+        <select id="timeMethod" class="c-cool">
           <option value="autopan">Autopan / Macro</option>
           <option value="sand">Sandshaking</option>
         </select>
