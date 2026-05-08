@@ -2816,15 +2816,14 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(1) + ' avg/pan | ' + o.basePercent + '%) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan from √cap×base% | ' + o.basePercent + '%) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
     });
 
     questResultCards.innerHTML = cardHTML;
-    var itemsPerPan = Math.sqrt(C);
-    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + itemsPerPan + ' items/pan avg | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
+    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + Math.sqrt(C).toFixed(2) + ' items/pan (√cap) | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
   }
 
   function rarityColorFn(r) {
