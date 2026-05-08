@@ -2733,13 +2733,17 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     var luck = getLuck();
     var C = getCap();
     var itemsPerPan = Math.sqrt(C);
-    var locs = m.locations.map(function(l) {
+var locs = m.locations.map(function(l) {
       var base = Number(l.chance_percent) / 100;
-      var expectedPerPan = itemsPerPan * base;
+      var itemRerolls = Math.ceil(5 / base);
+      var effectiveLuck = Math.min(luck, itemRerolls);
+      var expectedPerPan = effectiveLuck * base;
       return {
         name: l.location,
         basePercent: Number(l.chance_percent),
         expectedPerPan: expectedPerPan,
+        itemRerolls: itemRerolls,
+        effectiveLuck: effectiveLuck,
         region: l.region || ''
       };
     });
@@ -2816,7 +2820,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan from √cap×base% | ' + o.basePercent + '%) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | ' + o.basePercent + '% | pity in ' + o.itemRerolls + ' luck) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
