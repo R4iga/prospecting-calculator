@@ -2730,24 +2730,15 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     var minerals = window.MINERALS_DATA && window.MINERALS_DATA.minerals || [];
     var m = minerals.find(function(x) { return x.mineral === oreName; });
     if (!m || !m.locations || !m.locations.length) return [];
-    var luck = getLuck();
-    var C = getCap();
-    var rollsPerAttempt = luck * Math.sqrt(C);
     var locs = m.locations.map(function(l) {
-      var base = Number(l.chance_percent) / 100;
-      var expectedOrePerPan = rollsPerAttempt * base;
       return {
         name: l.location,
         basePercent: Number(l.chance_percent),
-        pAttempt: 1 - Math.pow(1 - base, rollsPerAttempt),
-        expectedPans: expectedOrePerPan > 0 ? 1 / expectedOrePerPan : Infinity,
-        expectedOrePerPan: expectedOrePerPan,
-        rollsPerAttempt: rollsPerAttempt,
         region: l.region || ''
       };
     });
     locs = locs.filter(function(l) { return !isBlacklisted(l.name); });
-    locs.sort(function(a, b) { return a.expectedPans - b.expectedPans; });
+    locs.sort(function(a, b) { return b.basePercent - a.basePercent; });
     return locs;
   }
 
@@ -2761,42 +2752,26 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     questEmpty.style.display = 'none';
     questResults.style.display = 'block';
 
-    var totalPans = 0;
     var cardHTML = '';
 
     var luck = getLuck();
     var C = getCap();
-    var rollsPerAttempt = luck * Math.sqrt(C);
 
-    // Find best combined spot (one location that covers multiple ores)
     var allLocs = {};
     validSlots.forEach(function(s) {
       var locs = getBestLocationsForOre(s.name);
       locs.forEach(function(l) {
         if (!allLocs[l.name]) {
-          allLocs[l.name] = { name: l.name, ores: [], totalPans: 0 };
+          allLocs[l.name] = { name: l.name, ores: [], bestBase: l.basePercent };
         }
-        // Prevent duplicate ores for the same location (keep best only)
         var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
-        var pansForOre = l.expectedPans * s.amount;
         if (existingOreIdx === -1) {
-          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: l.expectedPans, pansTotal: Math.ceil(l.expectedPans * s.amount), basePercent: l.basePercent, pAttempt: l.pAttempt, expectedOrePerPan: l.expectedOrePerPan });
-          allLocs[l.name].totalPans += pansForOre;
-        } else {
-          // Keep the better (lower pans) entry
-          var existingPans = allLocs[l.name].ores[existingOreIdx].pansTotal;
-          if (pansForOre < existingPans) {
-            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: l.expectedPans, pansTotal: Math.ceil(l.expectedPans * s.amount), basePercent: l.basePercent, pAttempt: l.pAttempt, expectedOrePerPan: l.expectedOrePerPan };
-            allLocs[l.name].totalPans += (pansForOre - existingPans);
-          }
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, basePercent: l.basePercent });
         }
       });
     });
 
-    var locList = Object.values(allLocs);
-    locList.sort(function(a, b) { return a.totalPans - b.totalPans; });
-
-    var totalPans = locList.reduce(function(s, l) { return s + l.totalPans; }, 0);
+    var locList = Object.values(allLocs).sort(function(a, b) { return b.bestBase - a.bestBase; });
 
     var multiSpot = locList.filter(function(l) { return l.ores.length > 1; })[0];
     if (multiSpot && validSlots.length > 1) {
@@ -2807,27 +2782,23 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       cardHTML += '<span style="font-size:0.72rem; color:var(--text-dim); margin-left:auto;">covers ' + multiSpot.ores.length + ' / ' + validSlots.length + ' ores</span>';
       cardHTML += '</div>';
       multiSpot.ores.forEach(function(o) {
-        var eop = o.expectedOrePerPan || 0;
-        var cpr = o.pAttempt > 0 ? (o.pAttempt * 100).toFixed(3) + '%' : '—';
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + Math.round(o.pansTotal * 10) / 10 + ' pans (' + eop.toFixed(2) + ' ore/pan | ' + cpr + ' at-least-1)</div>';
+        var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
+        var diff = luckNeeded - luck;
+        var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' — <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
       });
       cardHTML += '</div>';
     }
 
-    // Group by ore — one card per ore showing its top 3 locations
     validSlots.forEach(function(s) {
       var sNameLower = s.name.toLowerCase().trim();
-      // Search ALL locations (combo + single) for this ore
       var oreLocs = Object.values(allLocs).filter(function(l) {
         return l.ores.some(function(o) { return o.name.toLowerCase().trim() === sNameLower; });
-      }).sort(function(a, b) { return a.totalPans - b.totalPans; });
-      var oreData = oreLocs.length ? oreLocs[0].ores[0] : null;
-      var isFirst = validSlots.indexOf(s) === 0 && !multiSpot;
+      }).sort(function(a, b) { return b.bestBase - a.bestBase; });
 
-      cardHTML += '<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;' + (isFirst ? ' border-color:var(--cyan);' : '') + '">';
+      cardHTML += '<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;">';
       cardHTML += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">';
       cardHTML += '<span style="font-weight:700; font-size:0.85rem;">' + s.name + ' <span style="color:var(--text-dim); font-weight:400;">x' + s.amount + '</span></span>';
-      cardHTML += '<span style="font-size:0.75rem; color:var(--text-dim);">Need: ' + s.amount + ' &nbsp;|&nbsp; Est. <span style="color:var(--cyan); font-weight:600;">' + (oreData ? Math.round(oreData.pansTotal * 10) / 10 : '—') + '</span> pans</span>';
       cardHTML += '</div>';
       if (!oreLocs.length) {
         cardHTML += '<div style="font-size:0.72rem; color:var(--text-dim); font-style:italic;">No location data for "' + s.name + '"</div>';
@@ -2836,51 +2807,17 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var o = loc.ores[0];
           var label = idx === 0 ? 'Best' : '#' + (idx + 1);
           var color = idx === 0 ? 'var(--green)' : 'var(--text-mid)';
-          var eop = o.expectedOrePerPan || 0;
-          var orePerPan = eop > 0 ? eop.toFixed(2) : '—';
-          var chancePerRoll = loc.pAttempt > 0 ? (loc.pAttempt * 100).toFixed(3) + '%' : '—';
-          var luckStr = '';
-          if (o.basePercent > 0 && o.basePercent < 100) {
-            var neededLuck = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(getCap())));
-            if (neededLuck && neededLuck < 1e9) {
-              var currentLuck = getLuck();
-              var diff = neededLuck - currentLuck;
-              var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-              luckStr = ' | <span style="color:var(--text-dim);">Luck ' + Math.ceil(neededLuck).toLocaleString() + diffStr + ' for 50%</span>';
-            }
-          }
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(' + orePerPan + ' ore/pan | ' + chancePerRoll + ' at-least-1)' + luckStr + ' &mdash; ~' + Math.round(o.pansEach * 10) / 10 + ' pans each &rarr; ~' + Math.round(o.pansTotal * 10) / 10 + ' total</span></div>';
+          var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
+          var diff = luckNeeded - luck;
+          var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' — <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
     });
 
     questResultCards.innerHTML = cardHTML;
-
-    var cyclesPerMin = (function() {
-      var shake = Math.max(0, Number(document.getElementById('shakeSpeedInput') && document.getElementById('shakeSpeedInput').value) || 0);
-      var s = Math.max(0, Number(document.getElementById('sInput') && document.getElementById('sInput').value) || 0);
-      var n = Math.max(0, Number(document.getElementById('nInput') && document.getElementById('nInput').value) || 0);
-      var d = Math.max(0.0001, Number(document.getElementById('dInput') && document.getElementById('dInput').value) || 0.0001);
-      var r = (4.03266e-9 * Math.pow(shake, 3)) - (1.68935e-5 * Math.pow(shake, 2)) + (0.0255557 * shake) + 0.206594;
-      r = Math.max(0, r);
-      var rs = r * s;
-      if (rs <= 0) return 0;
-      var C2 = getCap();
-      var base = C2 / rs;
-      var method = document.getElementById('timeMethod') && document.getElementById('timeMethod').value;
-      var cycle = method === 'autopan' ? base + 1.5 + (190 * n / d) : base + 0.75 + (190 * Math.max(0, n - 1) / d);
-      return cycle > 0 ? 60 / cycle : 0;
-    })();
-
-    var mins = cyclesPerMin > 0 ? totalPans / cyclesPerMin : null;
-    var timeStr = mins !== null ? (mins >= 60 ? Math.floor(mins / 60) + 'h ' + Math.round(mins % 60) + 'm' : Math.round(mins) + 'm') : '—';
-
-    questTotals.innerHTML = '<div style="display:flex; gap:16px; flex-wrap:wrap;">' +
-      '<div>Total pans: <span style="color:var(--cyan); font-weight:700; font-size:1rem;">' + Math.round(totalPans * 10) / 10 + '</span></div>' +
-      '<div>Est. time: <span style="color:var(--green); font-weight:700; font-size:1rem;">' + timeStr + '</span></div>' +
-      '<div style="font-size:0.7rem; color:var(--text-dim); margin-left:auto; align-self:center;">Luck: ' + getLuck() + ' &nbsp; Cap: ' + getCap() + '</div>' +
-    '</div>';
+    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Current: Luck ' + luck + ' | Cap ' + C + ' | <span style="color:var(--yellow);">* Rare ores have high variance</span></div>';
   }
 
   function rarityColorFn(r) {
@@ -2943,7 +2880,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
   }
 
   document.addEventListener('input', function(e) {
-    var watchers = ['luckInput','capacityInput','shakeSpeedInput','sInput','nInput','dInput','timeMethod'];
+    var watchers = ['luckInput', 'capacityInput', 'timeMethod'];
     if (watchers.indexOf(e.target.id) !== -1) recalc();
   });
 
