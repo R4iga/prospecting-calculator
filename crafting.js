@@ -30,20 +30,35 @@ const MUTATION_MULTIPLIERS = [
 
 
 const STAT_META = {
-  luck: { label: "Luck", icon: "🍀" },
-  dig_strength: { label: "Dig Strength", icon: "💪" },
-  dig_speed: { label: "Dig Speed", icon: "⚡" },
-  shake_strength: { label: "Shake Strength", icon: "🤝" },
-  shake_speed: { label: "Shake Speed", icon: "💨" },
-  health: { label: "Health", icon: "❤️" },
-  walk_speed: { label: "Walk Speed", icon: "🏃" },
-  jump_power: { label: "Jump Power", icon: "🦘" },
-  size_boost: { label: "Size Boost", icon: "📏" },
-  sell_boost: { label: "Sell Boost", icon: "💰" },
-  modifier_boost: { label: "Modifier Boost", icon: "✨" },
-  treasure_map_chance: { label: "Treasure Map", icon: "🗺️" },
-  status_timer_speed: { label: "Status Timer", icon: "⏱️" }
+   luck: { label: "Luck", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8 7 4 9.5 4 14a8 8 0 0016 0c0-4.5-4-7-8-12z"/></svg>' },
+   dig_strength: { label: "Dig Strength", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4 4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>' },
+   dig_speed: { label: "Dig Speed", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>' },
+   shake_strength: { label: "Shake Strength", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 11V6a2 2 0 00-4 0M14 10V4a2 2 0 00-4 0v6M10 10.5V6a2 2 0 00-4 0v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-4a8 8 0 01-8-8V8a2 2 0 114 0v2a6 6 0 006 6h4a6 6 0 006-6v-2z"/></svg>' },
+   shake_speed: { label: "Shake Speed", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>' },
+   health: { label: "Health", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>' },
+   walk_speed: { label: "Walk Speed", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v4l3 3M7 17l4-6 3 3M17 17l-4-4M12 11v6"/></svg>' },
+   jump_power: { label: "Jump Power", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>' },
+   size_boost: { label: "Size Boost", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' },
+   sell_boost: { label: "Sell Boost", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>' },
+   modifier_boost: { label: "Modifier Boost", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l2 9.27l6.91-1.01L12 2z"/></svg>' },
+   treasure_map_chance: { label: "Treasure Map", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>' },
+   status_timer_speed: { label: "Status Timer", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' }
 };
+
+function rarityColor(r){
+   switch(r){
+     case "common": return "#a3a3a3";
+     case "uncommon": return "#22c55e";
+     case "rare": return "#3b82f6";
+     case "epic": return "#a855f7";
+     case "legendary": return "#f59e0b";
+     case "mythic": return "#cf0064";
+     case "mythical": return "#cf0064";
+     case "exotic": return "#ff0011";
+     case "ascended": return "#eceee0";
+     default: return "#7c8cff";
+   }
+}
 
 
 const PERCENT_STATS = new Set([
@@ -84,8 +99,6 @@ const equipSelect = document.getElementById("equipSelect");
 const equipLabel = document.getElementById("equipLabel");
 
 const equipRarityTag = document.getElementById("equipRarityTag");
-
-const equipRarityDot = document.getElementById("equipRarityDot");
 
 const equipAvailability = document.getElementById("equipAvailability");
 
@@ -745,11 +758,9 @@ function updateEquipmentDetails(item){
 
   equipLabel.textContent = `Equipment: ${item.name}`;
 
-  equipRarityTag.textContent = item.rarity ?? "-";
-
+equipRarityTag.textContent = item.rarity ?? "-";
   equipAvailability.textContent = item.availability ?? "normal";
-
-  equipRarityDot.style.background = rarityColor(item.rarity);
+  equipRarityTag.style.color = rarityColor(item.rarity) || '';
 
 
 
