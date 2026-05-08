@@ -2732,8 +2732,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     if (!m || !m.locations || !m.locations.length) return [];
     var luck = getLuck();
     var C = getCap();
-    var itemsPerPan = Math.sqrt(C);
-var locs = m.locations.map(function(l) {
+    var locs = m.locations.map(function(l) {
       var base = Number(l.chance_percent) / 100;
       var itemRerolls = Math.ceil(5 / base);
       var effectiveLuck = Math.min(luck, itemRerolls);
@@ -2776,7 +2775,7 @@ var locs = m.locations.map(function(l) {
         }
         var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
         if (existingOreIdx === -1) {
-          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, basePercent: l.basePercent, expectedPerPan: l.expectedPerPan });
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, basePercent: l.basePercent, expectedPerPan: l.expectedPerPan, itemRerolls: l.itemRerolls });
         }
       });
     });
