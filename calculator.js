@@ -229,7 +229,7 @@ function getCycleSeconds(C) {
 
    Displayed as 99%, but uses the pity formula:
 
-   (5 x odds) ï¿½ ((1.5 x luck x vcapacity) ï¿½ cycle time)
+   (5 x odds) ÃƒÂ¯Ã‚Â¿Ã‚Â½ ((1.5 x luck x vcapacity) ÃƒÂ¯Ã‚Â¿Ã‚Â½ cycle time)
 
 
 
@@ -593,31 +593,14 @@ function calculate() {
 
 
 
-  const rollsPerAttempt = Math.min(luck, Math.ceil(5 / p)) * Math.sqrt(C);
+// Selected location base chance per roll
+  const basePercent = Number(locationSelect.value);
+  const p = basePercent / 100;
+  const rollsPerAttempt = Math.min(luck, Math.ceil(5 / p)) * Math.sqrt(C); const pansPerMinute = (isFinite(cycleSeconds) && cycleSeconds > 0) ? (60 / cycleSeconds) : 0;
 
 
 
-  const pansPerMinute = (isFinite(cycleSeconds) && cycleSeconds > 0)
-
-    ? (60 / cycleSeconds)
-
-    : 0;
-
-
-
-  const shakeSpeed = Math.max(0, Number(shakeSpeedInput?.value) || 0);
-
-  const r = shakeSpeedToR(shakeSpeed);
-
-  const s = Math.max(0, Number(sInput?.value) || 0);
-
-  const n = Math.max(0, Number(nInput?.value) || 0);
-
-  const d = Math.max(0.0001, Number(dInput?.value) || 0.0001);
-
-
-
-  let cycleFormulaText = "";
+  let cycleFormulaText = ""; const shakeSpeed = Math.max(0, Number(shakeSpeedInput?.value) || 0); const r = shakeSpeedToR(shakeSpeed); const s = Math.max(0, Number(sInput?.value) || 0); const n = Math.max(0, Number(nInput?.value) || 0); const d = Math.max(0.0001, Number(dInput?.value) || 0.0001);
 
   if (timeMethod?.value === "autopan") {
 
@@ -645,17 +628,17 @@ function calculate() {
 
     rollsNote.textContent =
 
-      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} ï¿½ Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s ï¿½ s=${s.toFixed(2)} ï¿½ ${cycleFormulaText} ï¿½ Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} ï¿½ ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
+      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} ÃƒÂ¯Ã‚Â¿Ã‚Â½ Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s ÃƒÂ¯Ã‚Â¿Ã‚Â½ s=${s.toFixed(2)} ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${cycleFormulaText} ÃƒÂ¯Ã‚Â¿Ã‚Â½ Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
 
   }
 
 
 
-  // Selected location base chance per roll
 
-  const basePercent = Number(locationSelect.value);
 
-  const p = basePercent / 100;
+
+
+
 
 
 
@@ -733,7 +716,7 @@ function calculate() {
 
     atLeastSub.textContent =
 
-      `Chance of =1 in one attempt ï¿½ 99% time: ${fmtDuration(time99)}`;
+      `Chance of =1 in one attempt ÃƒÂ¯Ã‚Â¿Ã‚Â½ 99% time: ${fmtDuration(time99)}`;
 
   }
 
@@ -779,7 +762,7 @@ function calculate() {
 
   if (farmValueEl) farmValueEl.textContent = isFinite(totalValue) ? fmtMoney(totalValue) : "-";
 
-  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg ï¿½ ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
+  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
 
 
 
@@ -1194,7 +1177,7 @@ const BUILDS = {
 
       rings: ["1x Ring of Champions", "4x/3x Umbrite Ring", "5x/3x Umbrite Ring", "4x/3x Otherworldly Ring", "2x/1x Purifying Ring"],
 
-      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "ï¿½ Use Abyssal Shovel for 6 rings no-RoC"]
+      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "ÃƒÂ¯Ã‚Â¿Ã‚Â½ Use Abyssal Shovel for 6 rings no-RoC"]
 
     },
 
@@ -1214,7 +1197,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Pumpkin Lordï¿½ (fallback: Helm of the Round)",
+      charm: "Pumpkin LordÃƒÂ¯Ã‚Â¿Ã‚Â½ (fallback: Helm of the Round)",
 
       neck: "Frostthorn Pendant",
 
@@ -1226,9 +1209,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Blightflow (or Galacticï¿½)", enchant: "Cosmic" },
+    pan: { name: "Blightflow (or GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy Caneï¿½ (or Venomspade)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Venomspade)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1318,7 +1301,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Clockwork (fallback: Pumpkin Lordï¿½)",
+      charm: "Clockwork (fallback: Pumpkin LordÃƒÂ¯Ã‚Â¿Ã‚Â½)",
 
       neck: "Meteor Core",
 
@@ -1330,9 +1313,9 @@ const BUILDS = {
 
     runes: ["Mountain Climber", "Summit Seeker", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Nebula (or Galacticï¿½)", enchant: "Cosmic" },
+    pan: { name: "Nebula (or GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy Caneï¿½ (or Starcrusher)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Starcrusher)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1346,7 +1329,7 @@ const BUILDS = {
 
       charm: "Clockwork (fallback: Royal Federation Crown)",
 
-      neck: "Santa's Bagï¿½ (fallback: Venomshank)",
+      neck: "Santa's BagÃƒÂ¯Ã‚Â¿Ã‚Â½ (fallback: Venomshank)",
 
       rings: ["Ring of Champions", "4x/2x Otherworldly Ring", "2x Apocalypse Bringer", "1x Umbrite Ring"],
 
@@ -1356,9 +1339,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Solitude", "Abyssal/Sunblessed"],
 
-    pan: { name: "Galacticï¿½ (or Blightflow)", enchant: "Midas" },
+    pan: { name: "GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Blightflow)", enchant: "Midas" },
 
-    shovel: { name: "Candy Caneï¿½ (or Abyssal)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Abyssal)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1502,7 +1485,7 @@ const BUILDS = {
 
       charm: "Royal Federation Crown",
 
-      neck: "Amethyst Pendant | Spider Bowtieï¿½",
+      neck: "Amethyst Pendant | Spider BowtieÃƒÂ¯Ã‚Â¿Ã‚Â½",
 
       rings: ["8x/6x Apocalypse Bringer"],
 
@@ -1526,7 +1509,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Antlers of Life | Witch Hatï¿½",
+      charm: "Antlers of Life | Witch HatÃƒÂ¯Ã‚Â¿Ã‚Â½",
 
       neck: "Frostthorn Pendant",
 
@@ -1612,7 +1595,7 @@ function extractEquipName(str){
 
   let name = str.replace(/[\dx/]+\s*/, "").trim();
 
-  name = name.split('(')[0].split('mutation:')[0].split('ï¿½')[0].split('|')[0].trim();
+  name = name.split('(')[0].split('mutation:')[0].split('ÃƒÂ¯Ã‚Â¿Ã‚Â½')[0].split('|')[0].trim();
 
   return name;
 
@@ -1720,12 +1703,12 @@ function showBuildDetails(build){
       const usageText = s.usageCount > 1 ? ` (used in ${s.usageCount} items)` : '';
       if (s.location) {
         if (s.digs === Infinity) {
-          html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
+          html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
         } else {
-          html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
+          html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
         }
       } else {
-        html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? location unknown</li>`;
+        html += `<li><strong>${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material}</strong>${usageText} ? location unknown</li>`;
       }
     });
     html += '</ul></div>';
@@ -1782,12 +1765,12 @@ document.addEventListener("click", (e) => {
     strategy.forEach(s => {
       if (s.location) {
         if (s.digs === Infinity) {
-          text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
+          text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
         } else {
-          text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
+          text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
         }
       } else {
-        text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? location unknown\n`;
+        text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? location unknown\n`;
       }
     });
     navigator.clipboard.writeText(text).then(() => {
@@ -2418,16 +2401,16 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           const charm = BuildBuilder.slots.charm || {};
           if (neck.name && neck.mutation && neck.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[neck.mutation];
-            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (Ã—' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
           }
           if (charm.name && charm.mutation && charm.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[charm.mutation];
-            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (Ã—' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
           }
           BuildBuilder.slots.rings.forEach((ring, i) => {
             if (ring && ring.name && ring.mutation && ring.mutation !== 'None') {
               const mutData = BuildBuilder.mutations[ring.mutation];
-              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (Ã—' + mutData.multiplier + ')');
+              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
             }
           });
           mutSummary.innerHTML = mutations.length > 0 ? '<div style="font-weight:600; margin-bottom:4px;">Active Mutations:</div>' + mutations.join('<br>') : '';
@@ -2485,7 +2468,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (slot.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (ï¿½${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (ÃƒÂ¯Ã‚Â¿Ã‚Â½${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
@@ -2532,7 +2515,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (ring.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (ï¿½${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (ÃƒÂ¯Ã‚Â¿Ã‚Â½${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
@@ -2783,7 +2766,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
         var diff = luckNeeded - luck;
         var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' â€” <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' Ãƒ—Ã¢â€šÂ¬Ã¢â‚¬Â <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
       });
       cardHTML += '</div>';
     }
@@ -2809,15 +2792,15 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
           var baseOdds = Math.ceil(100 / o.basePercent);
-          var atLuckOdds = o.expectedPerPan > 0 ? Math.ceil(1 / o.expectedPerPan) : 'â€”';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | 1 in ' + baseOdds.toLocaleString() + ' base &rarr; 1 in ' + atLuckOdds + ' at-luck) â€” Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+          var atLuckOdds = o.expectedPerPan > 0 ? Math.ceil(1 / o.expectedPerPan) : '—';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | 1 in ' + baseOdds.toLocaleString() + ' base &rarr; 1 in ' + atLuckOdds + ' at-luck) Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
     });
 
     questResultCards.innerHTML = cardHTML;
-    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + Math.sqrt(C).toFixed(2) + ' items/pan (âˆšcap) | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
+    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + Math.sqrt(C).toFixed(2) + ' items/pan (—) | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
   }
 
   function rarityColorFn(r) {
