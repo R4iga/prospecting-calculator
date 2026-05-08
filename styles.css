@@ -654,7 +654,10 @@ body.loaded .mainArea > *:nth-child(5) { transition-delay: 0.5s; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+  min-width: 0;
 }
+.pair .field { min-width: 0; }
+.pair .field input { min-width: 0; width: 100%; }
 
 .note {
   margin-top: 8px;
