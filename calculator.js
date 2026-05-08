@@ -2779,13 +2779,13 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
         var pansForOre = l.expectedPans * s.amount;
         if (existingOreIdx === -1) {
-          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent });
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent, pAttempt: l.pAttempt });
           allLocs[l.name].totalPans += pansForOre;
         } else {
           // Keep the better (lower pans) entry
           var existingPans = allLocs[l.name].ores[existingOreIdx].pansTotal;
           if (pansForOre < existingPans) {
-            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent };
+            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent, pAttempt: l.pAttempt };
             allLocs[l.name].totalPans += (pansForOre - existingPans);
           }
         }
@@ -2806,7 +2806,8 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       cardHTML += '<span style="font-size:0.72rem; color:var(--text-dim); margin-left:auto;">covers ' + multiSpot.ores.length + ' / ' + validSlots.length + ' ores</span>';
       cardHTML += '</div>';
       multiSpot.ores.forEach(function(o) {
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + o.pansTotal.toLocaleString() + ' pans (' + o.basePercent.toFixed(4) + '%)</div>';
+        var cpr = (o.pAttempt * 100).toFixed(3) + '%';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + o.pansTotal.toLocaleString() + ' pans (' + cpr + ' / ' + (o.pansEach > 0 ? (1/o.pansEach).toFixed(2) : '—') + ' ore/pan)</div>';
       });
       cardHTML += '</div>';
     }
@@ -2833,7 +2834,9 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var o = loc.ores[0];
           var label = idx === 0 ? 'Best' : '#' + (idx + 1);
           var color = idx === 0 ? 'var(--green)' : 'var(--text-mid)';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' (' + o.basePercent.toFixed(4) + '%) &mdash; ~' + o.pansEach + ' pans each &rarr; ~' + o.pansTotal.toLocaleString() + ' total</div>';
+          var chancePerRoll = (loc.pAttempt * 100).toFixed(3) + '%';
+          var oresPerPan = o.pansEach > 0 ? (1 / o.pansEach).toFixed(2) : '—';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(' + chancePerRoll + ' / ' + oresPerPan + ' ore/pan) &mdash; ~' + o.pansEach + ' pans each &rarr; ~' + o.pansTotal.toLocaleString() + ' total</span></div>';
         });
       }
       cardHTML += '</div>';
