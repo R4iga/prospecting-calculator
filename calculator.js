@@ -2806,8 +2806,8 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       cardHTML += '<span style="font-size:0.72rem; color:var(--text-dim); margin-left:auto;">covers ' + multiSpot.ores.length + ' / ' + validSlots.length + ' ores</span>';
       cardHTML += '</div>';
       multiSpot.ores.forEach(function(o) {
-        var cpr = (o.pAttempt * 100).toFixed(3) + '%';
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + o.pansTotal.toLocaleString() + ' pans (' + cpr + ' / ' + (o.pansEach > 0 ? (1/o.pansEach).toFixed(2) : '—') + ' ore/pan)</div>';
+        var cpr = o.pAttempt > 0 ? (o.pAttempt * 100).toFixed(3) + '%' : '—';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + o.pansTotal.toLocaleString() + ' pans (' + cpr + ' / ' + (o.pAttempt > 0 ? o.pAttempt.toFixed(4) : '—') + ' ore/pan)</div>';
       });
       cardHTML += '</div>';
     }
@@ -2834,9 +2834,20 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var o = loc.ores[0];
           var label = idx === 0 ? 'Best' : '#' + (idx + 1);
           var color = idx === 0 ? 'var(--green)' : 'var(--text-mid)';
-          var chancePerRoll = (loc.pAttempt * 100).toFixed(3) + '%';
-          var oresPerPan = o.pansEach > 0 ? (1 / o.pansEach).toFixed(2) : '—';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(' + chancePerRoll + ' / ' + oresPerPan + ' ore/pan) &mdash; ~' + o.pansEach + ' pans each &rarr; ~' + o.pansTotal.toLocaleString() + ' total</span></div>';
+          var pAttempt = o.pAttempt || 0;
+          var chancePerRoll = pAttempt > 0 ? (pAttempt * 100).toFixed(3) + '%' : '—';
+          var oresPerPan = pAttempt > 0 ? (pAttempt).toFixed(4) : '—';
+          var luckStr = '';
+          if (pAttempt > 0 && o.basePercent > 0 && o.basePercent < 100) {
+            var neededLuck = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(getCap())));
+            if (neededLuck && neededLuck < 1e9) {
+              var currentLuck = getLuck();
+              var diff = neededLuck - currentLuck;
+              var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
+              luckStr = ' | <span style="color:var(--text-dim);">Luck ' + Math.ceil(neededLuck).toLocaleString() + diffStr + ' for 50%</span>';
+            }
+          }
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(' + chancePerRoll + ' chance / ' + oresPerPan + ' ore/pan)' + luckStr + ' &mdash; ~' + o.pansEach + ' pans each &rarr; ~' + o.pansTotal.toLocaleString() + ' total</span></div>';
         });
       }
       cardHTML += '</div>';
