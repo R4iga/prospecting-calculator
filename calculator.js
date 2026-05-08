@@ -1,4 +1,4 @@
-let minerals = [];
+﻿let minerals = [];
 let filtered = [];
 let allLocationNames = new Set();
 window.mineralSelect   = document.getElementById("mineralSelect");
@@ -229,7 +229,7 @@ function getCycleSeconds(C) {
 
    Displayed as 99%, but uses the pity formula:
 
-   (5 x odds) � ((1.5 x luck x vcapacity) � cycle time)
+   (5 x odds) ï¿½ ((1.5 x luck x vcapacity) ï¿½ cycle time)
 
 
 
@@ -251,24 +251,12 @@ function pityPansFromOdds(baseProb) {
 
 
 
-function pityTimeFromFormula(baseProb, luck, C, cycleSeconds) {
-
+function pityTimeFromFormula(baseProb, luck, C, cycleSeconds, totalRolls) {
   if (!isFinite(baseProb) || baseProb <= 0) return Infinity;
-
   if (!isFinite(cycleSeconds) || cycleSeconds <= 0) return Infinity;
-
-
-
-  const denom = (1.5 * Math.max(0, luck) * Math.sqrt(Math.max(1, C))) / cycleSeconds;
-
-  if (!isFinite(denom) || denom <= 0) return Infinity;
-
-
-
-  const odds = 1 / baseProb;
-
-  return (5 * odds) / denom;
-
+  var totalPans = (totalRolls > 0 && baseProb > 0) ? Math.min(totalRolls / baseProb, 5 / baseProb) : Infinity;
+  if (!isFinite(totalPans) || totalPans <= 0) return Infinity;
+  return totalPans * cycleSeconds;
 }
 
 
@@ -657,7 +645,7 @@ function calculate() {
 
     rollsNote.textContent =
 
-      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} � Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s � s=${s.toFixed(2)} � ${cycleFormulaText} � Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} � ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
+      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} ï¿½ Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s ï¿½ s=${s.toFixed(2)} ï¿½ ${cycleFormulaText} ï¿½ Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} ï¿½ ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
 
   }
 
@@ -693,11 +681,13 @@ function calculate() {
 
 
 
-  // Displayed as 99%, but uses pity formula
+// Displayed as 99%, but uses pity formula
+  var totalRolls = rollsPerAttempt;
+  var cappedPans = totalRolls > 0 ? totalRolls / p : Infinity;
+  var rawPityPans = 5 / p;
+  var pans99 = Math.min(cappedPans, rawPityPans);
 
-  const pans99 = pityPansFromOdds(p);
-
-  const time99 = pityTimeFromFormula(p, luck, C, cycleSeconds);
+  const time99 = pityTimeFromFormula(p, luck, C, cycleSeconds, rollsPerAttempt);
 
 
 
@@ -725,7 +715,7 @@ function calculate() {
 
     expectedSub.textContent =
 
-      `Expected finds/attempt � 99% pans: ${isFinite(pans99) ? pans99.toFixed(1) : "8"}`;
+      `Pity cap: ${isFinite(pans99) ? pans99.toFixed(1) : "8"}`;
 
   }
 
@@ -743,7 +733,7 @@ function calculate() {
 
     atLeastSub.textContent =
 
-      `Chance of =1 in one attempt � 99% time: ${fmtDuration(time99)}`;
+      `Chance of =1 in one attempt ï¿½ 99% time: ${fmtDuration(time99)}`;
 
   }
 
@@ -789,7 +779,7 @@ function calculate() {
 
   if (farmValueEl) farmValueEl.textContent = isFinite(totalValue) ? fmtMoney(totalValue) : "-";
 
-  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg � ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
+  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg ï¿½ ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
 
 
 
@@ -965,7 +955,7 @@ function fillTable(m, luck, C, cycleSeconds, rollsPerAttempt, locFilterVal) {
 
     const rowT90 = (isFinite(row90) && isFinite(cycleSeconds)) ? (row90 * cycleSeconds) : Infinity;
 
-    const rowT99 = pityTimeFromFormula(bp, luck, C, cycleSeconds);
+    const rowT99 = pityTimeFromFormula(bp, luck, C, cycleSeconds, rollsPerAttempt);
 
 
 
@@ -1204,7 +1194,7 @@ const BUILDS = {
 
       rings: ["1x Ring of Champions", "4x/3x Umbrite Ring", "5x/3x Umbrite Ring", "4x/3x Otherworldly Ring", "2x/1x Purifying Ring"],
 
-      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "� Use Abyssal Shovel for 6 rings no-RoC"]
+      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "ï¿½ Use Abyssal Shovel for 6 rings no-RoC"]
 
     },
 
@@ -1224,7 +1214,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Pumpkin Lord� (fallback: Helm of the Round)",
+      charm: "Pumpkin Lordï¿½ (fallback: Helm of the Round)",
 
       neck: "Frostthorn Pendant",
 
@@ -1236,9 +1226,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Blightflow (or Galactic�)", enchant: "Cosmic" },
+    pan: { name: "Blightflow (or Galacticï¿½)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy Cane� (or Venomspade)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Caneï¿½ (or Venomspade)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1328,7 +1318,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Clockwork (fallback: Pumpkin Lord�)",
+      charm: "Clockwork (fallback: Pumpkin Lordï¿½)",
 
       neck: "Meteor Core",
 
@@ -1340,9 +1330,9 @@ const BUILDS = {
 
     runes: ["Mountain Climber", "Summit Seeker", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Nebula (or Galactic�)", enchant: "Cosmic" },
+    pan: { name: "Nebula (or Galacticï¿½)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy Cane� (or Starcrusher)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Caneï¿½ (or Starcrusher)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1356,7 +1346,7 @@ const BUILDS = {
 
       charm: "Clockwork (fallback: Royal Federation Crown)",
 
-      neck: "Santa's Bag� (fallback: Venomshank)",
+      neck: "Santa's Bagï¿½ (fallback: Venomshank)",
 
       rings: ["Ring of Champions", "4x/2x Otherworldly Ring", "2x Apocalypse Bringer", "1x Umbrite Ring"],
 
@@ -1366,9 +1356,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Solitude", "Abyssal/Sunblessed"],
 
-    pan: { name: "Galactic� (or Blightflow)", enchant: "Midas" },
+    pan: { name: "Galacticï¿½ (or Blightflow)", enchant: "Midas" },
 
-    shovel: { name: "Candy Cane� (or Abyssal)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Caneï¿½ (or Abyssal)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1512,7 +1502,7 @@ const BUILDS = {
 
       charm: "Royal Federation Crown",
 
-      neck: "Amethyst Pendant | Spider Bowtie�",
+      neck: "Amethyst Pendant | Spider Bowtieï¿½",
 
       rings: ["8x/6x Apocalypse Bringer"],
 
@@ -1536,7 +1526,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Antlers of Life | Witch Hat�",
+      charm: "Antlers of Life | Witch Hatï¿½",
 
       neck: "Frostthorn Pendant",
 
@@ -1622,7 +1612,7 @@ function extractEquipName(str){
 
   let name = str.replace(/[\dx/]+\s*/, "").trim();
 
-  name = name.split('(')[0].split('mutation:')[0].split('�')[0].split('|')[0].trim();
+  name = name.split('(')[0].split('mutation:')[0].split('ï¿½')[0].split('|')[0].trim();
 
   return name;
 
@@ -1730,12 +1720,12 @@ function showBuildDetails(build){
       const usageText = s.usageCount > 1 ? ` (used in ${s.usageCount} items)` : '';
       if (s.location) {
         if (s.digs === Infinity) {
-          html += `<li><strong>${s.amount}� ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
+          html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
         } else {
-          html += `<li><strong>${s.amount}� ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
+          html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
         }
       } else {
-        html += `<li><strong>${s.amount}� ${s.material}</strong>${usageText} ? location unknown</li>`;
+        html += `<li><strong>${s.amount}ï¿½ ${s.material}</strong>${usageText} ? location unknown</li>`;
       }
     });
     html += '</ul></div>';
@@ -1792,12 +1782,12 @@ document.addEventListener("click", (e) => {
     strategy.forEach(s => {
       if (s.location) {
         if (s.digs === Infinity) {
-          text += `� ${s.amount}� ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
+          text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? ${s.location} (${s.chance}% base, impossible)\n`;
         } else {
-          text += `� ${s.amount}� ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
+          text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
         }
       } else {
-        text += `� ${s.amount}� ${s.material} ? location unknown\n`;
+        text += `ï¿½ ${s.amount}ï¿½ ${s.material} ? location unknown\n`;
       }
     });
     navigator.clipboard.writeText(text).then(() => {
@@ -2428,16 +2418,16 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           const charm = BuildBuilder.slots.charm || {};
           if (neck.name && neck.mutation && neck.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[neck.mutation];
-            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (×' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (Ã—' + mutData.multiplier + ')');
           }
           if (charm.name && charm.mutation && charm.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[charm.mutation];
-            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (×' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (Ã—' + mutData.multiplier + ')');
           }
           BuildBuilder.slots.rings.forEach((ring, i) => {
             if (ring && ring.name && ring.mutation && ring.mutation !== 'None') {
               const mutData = BuildBuilder.mutations[ring.mutation];
-              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (×' + mutData.multiplier + ')');
+              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (Ã—' + mutData.multiplier + ')');
             }
           });
           mutSummary.innerHTML = mutations.length > 0 ? '<div style="font-weight:600; margin-bottom:4px;">Active Mutations:</div>' + mutations.join('<br>') : '';
@@ -2495,7 +2485,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (slot.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (�${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (ï¿½${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
@@ -2542,7 +2532,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (ring.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (�${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (ï¿½${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
@@ -2793,7 +2783,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
         var diff = luckNeeded - luck;
         var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' — <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' â€” <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
       });
       cardHTML += '</div>';
     }
@@ -2819,15 +2809,15 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
           var baseOdds = Math.ceil(100 / o.basePercent);
-          var atLuckOdds = o.expectedPerPan > 0 ? Math.ceil(1 / o.expectedPerPan) : '—';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | 1 in ' + baseOdds.toLocaleString() + ' base &rarr; 1 in ' + atLuckOdds + ' at-luck) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+          var atLuckOdds = o.expectedPerPan > 0 ? Math.ceil(1 / o.expectedPerPan) : 'â€”';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(2) + ' ore/pan | 1 in ' + baseOdds.toLocaleString() + ' base &rarr; 1 in ' + atLuckOdds + ' at-luck) â€” Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
     });
 
     questResultCards.innerHTML = cardHTML;
-    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + Math.sqrt(C).toFixed(2) + ' items/pan (√cap) | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
+    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + Math.sqrt(C).toFixed(2) + ' items/pan (âˆšcap) | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
   }
 
   function rarityColorFn(r) {
