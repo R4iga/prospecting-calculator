@@ -2891,7 +2891,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
 
   document.addEventListener('input', function(e) {
     var watchers = ['luckInput', 'capacityInput', 'timeMethod'];
-    if (watchers.indexOf(e.target.id) !== -1) recalc();
+    if (watchers.indexOf(e.target.id) !== -1 || e.target.id === 'blacklistSeasonal') recalc();
   });
 
   document.addEventListener('change', function(e) {
@@ -2902,6 +2902,10 @@ function animateValue(el, start, end, duration, decimalPlaces) {
 
   var blacklistCheck = document.getElementById('blacklistSeasonal');
   if (blacklistCheck) {
+    blacklistCheck.addEventListener('input', function() {
+      blacklistEnabled = this.checked;
+      recalc();
+    });
     blacklistCheck.addEventListener('change', function() {
       blacklistEnabled = this.checked;
       recalc();
