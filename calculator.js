@@ -2730,15 +2730,21 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     var minerals = window.MINERALS_DATA && window.MINERALS_DATA.minerals || [];
     var m = minerals.find(function(x) { return x.mineral === oreName; });
     if (!m || !m.locations || !m.locations.length) return [];
+    var luck = getLuck();
+    var C = getCap();
+    var itemsPerPan = C * C;
     var locs = m.locations.map(function(l) {
+      var base = Number(l.chance_percent) / 100;
+      var expectedPerPan = itemsPerPan * base;
       return {
         name: l.location,
         basePercent: Number(l.chance_percent),
+        expectedPerPan: expectedPerPan,
         region: l.region || ''
       };
     });
     locs = locs.filter(function(l) { return !isBlacklisted(l.name); });
-    locs.sort(function(a, b) { return b.basePercent - a.basePercent; });
+    locs.sort(function(a, b) { return b.expectedPerPan - a.expectedPerPan; });
     return locs;
   }
 
@@ -2762,16 +2768,16 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       var locs = getBestLocationsForOre(s.name);
       locs.forEach(function(l) {
         if (!allLocs[l.name]) {
-          allLocs[l.name] = { name: l.name, ores: [], bestBase: l.basePercent };
+          allLocs[l.name] = { name: l.name, ores: [], bestPerPan: l.expectedPerPan };
         }
         var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
         if (existingOreIdx === -1) {
-          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, basePercent: l.basePercent });
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, basePercent: l.basePercent, expectedPerPan: l.expectedPerPan });
         }
       });
     });
 
-    var locList = Object.values(allLocs).sort(function(a, b) { return b.bestBase - a.bestBase; });
+    var locList = Object.values(allLocs).sort(function(a, b) { return b.bestPerPan - a.bestPerPan; });
 
     var multiSpot = locList.filter(function(l) { return l.ores.length > 1; })[0];
     if (multiSpot && validSlots.length > 1) {
@@ -2794,7 +2800,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       var sNameLower = s.name.toLowerCase().trim();
       var oreLocs = Object.values(allLocs).filter(function(l) {
         return l.ores.some(function(o) { return o.name.toLowerCase().trim() === sNameLower; });
-      }).sort(function(a, b) { return b.bestBase - a.bestBase; });
+      }).sort(function(a, b) { return b.bestPerPan - a.bestPerPan; });
 
       cardHTML += '<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;">';
       cardHTML += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">';
@@ -2810,14 +2816,15 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
           var diff = luckNeeded - luck;
           var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' — <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' <span style="color:var(--text-dim);">(~' + o.expectedPerPan.toFixed(1) + ' avg/pan | ' + o.basePercent + '%) — Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
         });
       }
       cardHTML += '</div>';
     });
 
     questResultCards.innerHTML = cardHTML;
-    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Current: Luck ' + luck + ' | Cap ' + C + ' | <span style="color:var(--yellow);">* Rare ores have high variance</span></div>';
+    var itemsPerPan = C * C;
+    questTotals.innerHTML = '<div style="font-size:0.72rem; color:var(--text-dim);">Luck ' + luck + ' | Cap ' + C + ' &rarr; ' + itemsPerPan + ' items/pan avg | <span style="color:var(--yellow);">* High variance on rare ores</span></div>';
   }
 
   function rarityColorFn(r) {
