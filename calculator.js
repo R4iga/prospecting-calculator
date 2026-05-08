@@ -593,7 +593,7 @@ function calculate() {
 
 
 
-  const rollsPerAttempt = luck * Math.sqrt(C);
+  const rollsPerAttempt = Math.min(luck, Math.ceil(5 / p)) * Math.sqrt(C);
 
 
 
@@ -1844,7 +1844,7 @@ function generateDigStrategy(build, currentLuck, digStrength) {
   const { materials, usage } = calculateBuildMaterials(build);
   const strategy = [];
   const C = digStrength || 1;
-  const rollsPerAttempt = currentLuck * Math.sqrt(C);
+  const rollsPerAttempt = Math.min(currentLuck, Math.ceil(5 / bp)) * Math.sqrt(C);
   Object.entries(materials).forEach(([mat, amount]) => {
     const locInfo = findBestLocationForMaterial(mat);
     if (!locInfo) {
