@@ -182,7 +182,7 @@
           <div id="questResults" style="display:none;">
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
               <div style="font-weight:600; font-size:0.8rem;">Best Locations per Ore:</div>
-              <label class="toggle-wrap" style="margin-left:auto; display:flex; align-items:center; gap:6px; cursor:pointer;">
+              <label class="toggle-wrap" style="margin-left:auto; display:flex; align-items:center; gap:6px; cursor:pointer;" onclick="blacklistEnabled=document.getElementById('blacklistSeasonal').checked; recalc();">
                 <span style="font-size:0.72rem; color:var(--text-dim);">Exclude Seasonal</span>
                 <div class="toggle">
                   <input type="checkbox" id="blacklistSeasonal" />

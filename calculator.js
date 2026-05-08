@@ -2890,29 +2890,27 @@ function animateValue(el, start, end, duration, decimalPlaces) {
   }
 
   document.addEventListener('input', function(e) {
-    var watchers = ['luckInput', 'capacityInput', 'timeMethod'];
-    if (watchers.indexOf(e.target.id) !== -1 || e.target.id === 'blacklistSeasonal') recalc();
+    var watchers = ['luckInput', 'capacityInput', 'timeMethod', 'blacklistSeasonal'];
+    if (watchers.indexOf(e.target.id) !== -1) recalc();
   });
 
   document.addEventListener('change', function(e) {
-    if (e.target.id === 'luckInput' || e.target.id === 'capacityInput' || e.target.id === 'blacklistSeasonal') recalc();
+    if (e.target.id === 'luckInput' || e.target.id === 'capacityInput') recalc();
   });
 
-  buildUI();
+buildUI();
+  recalc();
 
-  var blacklistCheck = document.getElementById('blacklistSeasonal');
-  if (blacklistCheck) {
-    blacklistCheck.addEventListener('input', function() {
-      blacklistEnabled = this.checked;
-      recalc();
-    });
-    blacklistCheck.addEventListener('change', function() {
-      blacklistEnabled = this.checked;
-      recalc();
+  var blacklistWrap = document.querySelector('#questResults label.toggle-wrap, #questResults .toggle, #blacklistSeasonal');
+  if (blacklistWrap) {
+    blacklistWrap.addEventListener('click', function() {
+      var cb = document.getElementById('blacklistSeasonal');
+      if (cb) {
+        blacklistEnabled = cb.checked;
+        recalc();
+      }
     });
   }
-
-  recalc();
 })();
 
 // We'll patch the display updates directly in the metric elements
