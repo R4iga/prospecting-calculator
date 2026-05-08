@@ -5,7 +5,7 @@ const MAX_COMPARE = 3;
 function addToCompare() {
   if (!currentItem) return;
   if (compareItems.find(function(i) { return i.name === currentItem.name; })) return;
-  if (compareItems.length >= MAX_COMPARE) { alert('Max 3 items'); return; }
+  if (compareItems.length >= MAX_COMPARE) { if (typeof showToast === 'function') showToast('Max 3 items to compare', 'error'); return; }
   compareItems.push(currentItem);
   renderComparison();
 }

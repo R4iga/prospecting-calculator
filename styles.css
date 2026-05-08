@@ -1379,4 +1379,224 @@ body.loaded .mainArea > *:nth-child(5) { transition-delay: 0.5s; }
   }
 }
 
+/* =======================
+   PROFESSIONAL ANIMATIONS
+========================*/
+
+/* Micro-interactions: button press */
+button, .btn, button * {
+  transition: transform 0.12s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+button:active, .btn:active {
+  transform: scale(0.96);
+}
+
+/* Card hover lift */
+.card {
+  transition: border-color 0.3s var(--ease), box-shadow 0.25s var(--ease) !important;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,229,255,0.08);
+}
+
+/* Active mutation glow pulse */
+.mutation-select:not([value="None"]) {
+  border-color: var(--purple) !important;
+  box-shadow: 0 0 8px rgba(155,77,255,0.25);
+  animation: mutation-glow 2s ease-in-out infinite;
+}
+@keyframes mutation-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(155,77,255,0.2); }
+  50% { box-shadow: 0 0 16px rgba(155,77,255,0.45); }
+}
+
+/* Build stats slide-up entrance */
+#buildStats {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: max-height 0.4s var(--ease), opacity 0.35s var(--ease), padding 0.3s var(--ease), margin 0.3s var(--ease), border-width 0.2s var(--ease);
+  border-width: 0 !important;
+}
+#buildStats.visible {
+  max-height: 600px;
+  opacity: 1;
+  padding: 8px !important;
+  margin-top: 8px !important;
+  border-width: 1px !important;
+}
+
+/* Empty slot styling */
+.equip-slot.empty {
+  border-style: dashed !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.equip-slot.empty .equip-select {
+  opacity: 0.6;
+}
+.equip-slot.empty::before {
+  content: '+';
+  position: absolute;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  opacity: 0.3;
+  animation: empty-pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes empty-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.08); }
+}
+
+/* Ring slot staggered entrance (only for dynamic ring slots) */
+@keyframes slot-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.equip-slot.stagger-in {
+  animation: slot-in 0.35s var(--ease) both;
+  animation-fill-mode: backwards;
+}
+
+/* Toast notification */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: toast-in 0.3s var(--ease) forwards;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  pointer-events: auto;
+}
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error { border-color: var(--red); color: var(--red); }
+.toast.info { border-color: var(--cyan); color: var(--cyan); }
+@keyframes toast-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes toast-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-10px); opacity: 0; }
+}
+.toast.out {
+  animation: toast-out 0.25s var(--ease) forwards;
+}
+
+/* Mini stat bars */
+.stat-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.stat-bar-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s var(--ease);
+}
+.stat-bar-fill.cyan { background: var(--cyan); }
+.stat-bar-fill.green { background: var(--green); }
+.stat-bar-fill.pink { background: var(--pink); }
+.stat-bar-fill.purple { background: var(--purple); }
+
+/* Focus glow enhancement */
+.equip-select:focus, .mutation-select:focus,
+input:focus, select:focus {
+  box-shadow: 0 0 0 3px var(--cyan-dim), 0 0 12px rgba(0,229,255,0.08) !important;
+}
+
+/* Loading shimmer for equipment slots */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--bg-input) 25%, rgba(255,255,255,0.03) 50%, var(--bg-input) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Canvas particles base */
+#particles {
+  contain: layout style paint;
+}
+
+/* will-change hints for GPU promotion */
+#bg-interactive {
+  will-change: transform;
+}
+
+/* contain: layout style paint on cards for isolation */
+.card {
+  contain: layout style paint;
+}
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #bg-interactive, .card, .metric, .equip-slot {
+    transition: none !important;
+    transform: none !important;
+  }
+  button:active, .btn:active {
+    transform: none !important;
+  }
+  .card:hover, .metric:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .toast {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .toast.out {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .equip-slot.stagger-in {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
 

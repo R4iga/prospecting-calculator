@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=25" />
+  <link rel="stylesheet" href="styles.css?v=26" />
 </head>
 <body>
   <div id="loader" style="position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;"><div class="spinner"></div></div>
@@ -25,7 +25,6 @@
         if (window.BuildBuilder) {
           var success = window.BuildBuilder.loadFromCode(buildCode);
           if (success && document.querySelector('.buildSection')) {
-            // Trigger UI update
             var event = new Event('change');
             var neckSelect = document.querySelector('[data-slot="neck"]');
             var charmSelect = document.querySelector('[data-slot="charm"]');
@@ -37,13 +36,12 @@
               charmSelect.value = BuildBuilder.slots.charm.name;
               charmSelect.dispatchEvent(event);
             }
-            // Update UI
             if (typeof updateRingsUI === 'function') updateRingsUI();
             if (typeof updateBuildStats === 'function') updateBuildStats();
-            alert('Build loaded from URL!');
+            if (typeof showToast === 'function') showToast('Build loaded from URL!', 'info');
           }
         }
-      }, 1000); // Wait for BuildBuilder to initialize
+      }, 1000);
     }
   </script>
   <div id="bg-interactive"></div>
@@ -64,10 +62,7 @@
         <option value="mythic">Mythic</option>
         <option value="exotic">Exotic</option>
         </select>
-        <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
-          <input type="text" id="buildCodeInput" placeholder="Paste build code..." style="flex:1; min-width:150px; padding:6px 10px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.85rem;" />
-        </div>
-        <div id="codeOutput" style="width:100%; padding:8px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; font-size:0.8rem; color:var(--cyan); word-break:break-all; display:none; margin-top:8px;"></div>
+
       </div>
   </div>
 
@@ -172,11 +167,38 @@
     <!-- MAIN CONTENT RIGHT -->
     <div class="contentRight">
 
+      <!-- Tabs -->
+      <div class="tabNav" id="mainTabs">
+        <button class="tabBtn active" data-tab="mineralChances">Mineral Chances</button>
+        <button class="tabBtn" data-tab="dredgeQuest">Dredge Quest Guide</button>
+      </div>
+
+      <!-- Dredge Quest Guide Tab -->
+      <div class="tabContent" id="tab-dredgeQuest">
+        <div class="card">
+          <h3>Dredge Quest Guide</h3>
+          <p style="font-size:0.75rem; color:var(--text-dim); margin:4px 0 12px;">Enter your quest requirements to find the fastest locations.</p>
+          <div id="questInputs" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px;"></div>
+          <div id="questResults" style="display:none;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+              <div style="font-weight:600; font-size:0.8rem;">Best Locations per Ore:</div>
+              <label style="margin-left:auto; font-size:0.72rem; color:var(--text-dim); display:flex; align-items:center; gap:4px; cursor:pointer;">
+                <input type="checkbox" id="blacklistSeasonal" style="cursor:pointer;" />
+                Exclude Seasonal &amp; Void
+              </label>
+            </div>
+            <div id="questResultCards"></div>
+            <div id="questTotals" style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:0.8rem;"></div>
+          </div>
+          <div id="questEmpty" style="color:var(--text-dim); font-size:0.8rem; text-align:center; padding:12px;">Fill in at least one ore above</div>
+        </div>
+      </div>
+
       <!-- Build Details (shown when build selected) -->
       <div id="buildDetails" class="card" style="display:none;"></div>
 
       <!-- RESULTS (sticky) -->
-      <div class="card resultsCard stickyResults">
+      <div class="card resultsCard stickyResults" id="tab-mineralChances">
         <div class="resultsHeader">
           <div class="badge">
             <span class="dot" id="rarityDot"></span>
@@ -401,14 +423,15 @@
           <div style="color:var(--text-dim); font-size:0.85rem; padding:12px; text-align:center;">Select equipment and click "Add to Compare" (max 3)</div>
         </div>
       </div>
+
     </div>
   </section>
 
-  <script src="minerals-data.js?v=23"></script>
-  <script src="crafting-data.js?v=23"></script>
-  <script src="calculator.js?v=23"></script>
-  <script src="crafting.js?v=23"></script>
-  <script src="comparison.js?v=2"></script>
+  <script src="minerals-data.js?v=26"></script>
+  <script src="crafting-data.js?v=26"></script>
+  <script src="calculator.js?v=28"></script>
+  <script src="crafting.js?v=26"></script>
+  <script src="comparison.js?v=5"></script>
 
   <script>
     // Profit Animation
@@ -438,69 +461,106 @@
   </section>
 
   <script>
-    // Ultra-smooth optimized parallax
+    // Lightweight particle system
     (function() {
-      // Cache DOM elements once
-      const els = {
-        topBar: document.querySelectorAll('.topBar'),
-        cards: document.querySelectorAll('.card'),
-        tools: document.querySelectorAll('.toolsSection'),
-        bg: document.getElementById('bg-interactive'),
-        dividers: document.querySelectorAll('.sectionDivider'),
-        headings: document.querySelectorAll('h2, h3'),
-        fields: document.querySelectorAll('.field'),
-        tables: document.querySelectorAll('.tableWrap')
-      };
+      var container = document.getElementById('particles');
+      if (!container) return;
+      var canvas = document.createElement('canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
+      container.appendChild(canvas);
+      var ctx = canvas.getContext('2d');
+      var particles = [];
+      var colors = ['#a3a3a3','#22c55e','#3b82f6','#a855f7','#f59e0b'];
       
-      const range = 80;
-      const lerp = 0.28;
+      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      window.addEventListener('resize', resize);
       
-      let targetX = 0, targetY = 0;
-      let currentX = 0, currentY = 0;
-      let ticking = false;
-      
-      // Throttled mousemove
-      document.addEventListener('mousemove', function(e) {
-        targetX = (e.clientX / window.innerWidth - 0.5) * range;
-        targetY = (e.clientY / window.innerHeight - 0.5) * range;
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(update);
-        }
-      });
-      
-      function update() {
-        currentX += (targetX - currentX) * lerp;
-        currentY += (targetY - currentY) * lerp;
-        
-        const mx = currentX.toFixed(2);
-        const my = currentY.toFixed(2);
-        
-        // Update each element type with its multiplier
-        updateElements(els.topBar, mx, my, 0.2);
-        updateElements(els.cards, mx, my, 0.15);
-        updateElements(els.tools, mx, my, 0.18);
-        updateElements(els.dividers, mx, my, 0.1);
-        updateElements(els.headings, mx, my, 0.12);
-        updateElements(els.fields, mx, my, 0.08);
-        updateElements(els.tables, mx, my, 0.1);
-        
-        if (els.bg) {
-          els.bg.style.transform = 'translate3d(' + (mx * 4) + 'px, ' + (my * 4) + 'px, 0)';
-        }
-        
-        ticking = false;
-      }
-      
-      function updateElements(elements, x, y, mult) {
-        const tx = (x * mult).toFixed(2);
-        const ty = (y * mult).toFixed(2);
-        elements.forEach(function(el) {
-          el.style.transform = 'translate3d(' + tx + 'px, ' + ty + 'px, 0)';
+      function spawn() {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: canvas.height + 5,
+          size: 1 + Math.random() * 2,
+          speed: 0.15 + Math.random() * 0.4,
+          drift: (Math.random() - 0.5) * 0.2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 0.15 + Math.random() * 0.3
         });
       }
       
-      // Initial frame
+      for (var i = 0; i < 8; i++) spawn();
+      
+      var last = 0;
+      function loop(now) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (now - last > 500 + Math.random() * 500) { spawn(); last = now; }
+        for (var i = particles.length - 1; i >= 0; i--) {
+          var p = particles[i];
+          p.y -= p.speed; p.x += p.drift;
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
+          if (p.y < -10) particles.splice(i, 1);
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(loop);
+      }
+      
+      setTimeout(function() { requestAnimationFrame(loop); }, 200);
+    })();
+  </script>
+
+  <script>
+    // Subtle parallax (lightweight)
+    (function() {
+      var bg = document.getElementById('bg-interactive');
+      var range = 30;
+      var lerp = 0.1;
+      var tx = 0, ty = 0;
+      var cx = 0, cy = 0;
+      var ticking = false;
+      
+      document.addEventListener('mousemove', function(e) {
+        tx = (e.clientX / window.innerWidth - 0.5) * range;
+        ty = (e.clientY / window.innerHeight - 0.5) * range;
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      });
+      
+      function update() {
+        cx += (tx - cx) * lerp;
+        cy += (ty - cy) * lerp;
+        if (bg) bg.style.transform = 'translate3d(' + (cx * 2) + 'px,' + (cy * 2) + 'px,0)';
+        ticking = false;
+      }
+      
+      requestAnimationFrame(update);
+    })();
+  </script>
+
+  <script>
+    // Subtle parallax (reduced for performance)
+    (function() {
+      var bg = document.getElementById('bg-interactive');
+      var range = 30;
+      var lerp = 0.1;
+      var tx = 0, ty = 0;
+      var cx = 0, cy = 0;
+      var ticking = false;
+      
+      document.addEventListener('mousemove', function(e) {
+        tx = (e.clientX / window.innerWidth - 0.5) * range;
+        ty = (e.clientY / window.innerHeight - 0.5) * range;
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      });
+      
+      function update() {
+        cx += (tx - cx) * lerp;
+        cy += (ty - cy) * lerp;
+        if (bg) bg.style.transform = 'translate3d(' + (cx * 2) + 'px,' + (cy * 2) + 'px,0)';
+        ticking = false;
+      }
+      
       requestAnimationFrame(update);
     })();
   </script>

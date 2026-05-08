@@ -1916,6 +1916,28 @@ function findMultiMaterialLocations(build) {
 }
 
 if (buildSelect) buildSelect.addEventListener("change", applyBuild);
+// Toast notification system
+function showToast(message, type) {
+  var container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  var toast = document.createElement('div');
+  toast.className = 'toast' + (type ? ' ' + type : '');
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(function() {
+    toast.classList.add('out');
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 2200);
+}
+
+// Previous stat values for animation
+var _prevBuildStats = { luck: 0, capacity: 0, digStrength: 0, digSpeed: 0 };
+
 function animateValue(el, start, end, duration, decimalPlaces) {
   if (!el) return;
   const startTime = performance.now();
@@ -1928,14 +1950,14 @@ function animateValue(el, start, end, duration, decimalPlaces) {
     if (progress < 1) requestAnimationFrame(update);
   }
   requestAnimationFrame(update);
-  }
+}
   
   // Equipment Build Builder System
   window.BuildBuilder = {
     slots: {
-      neck: { name: null, mutation: 'None' },
-      charm: { name: null, mutation: 'None' },
-      rings: [{ name: null, mutation: 'None' }, { name: null, mutation: 'None' }],
+      neck: { name: null, mutation: 'None', star: 1 },
+      charm: { name: null, mutation: 'None', star: 1 },
+      rings: [{ name: null, mutation: 'None', star: 1 }, { name: null, mutation: 'None', star: 1 }],
       shovel: null
     },
     maxRings: 2,
@@ -2269,13 +2291,13 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           </div>
 
           <!-- Stats Summary -->
-          <div id="buildStats" style="margin-top:8px; padding:8px; background:var(--bg-card); border-radius:8px; display:none;">
+          <div id="buildStats" style="background:var(--bg-card); border-radius:8px; border:1px solid var(--border);">
             <div style="font-weight:600; margin-bottom:6px; font-size:0.85rem;">Total Stats (with Mutations):</div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; font-size:0.8rem;">
-              <div>Luck: <span id="totalLuck" style="color:var(--cyan); font-weight:600;">0</span></div>
-              <div>Capacity: <span id="totalCapacity" style="color:var(--green); font-weight:600;">0</span></div>
-              <div>Dig Strength: <span id="totalDigStrength" style="color:var(--pink); font-weight:600;">0</span></div>
-              <div>Dig Speed: <span id="totalDigSpeed" style="color:var(--purple); font-weight:600;">0</span></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.8rem;">
+              <div class="stat-bar-wrapper"><span>Luck: <span id="totalLuck" style="color:var(--cyan); font-weight:600;">0</span></span><div class="stat-bar-track"><div class="stat-bar-fill cyan" id="barLuck" style="width:0%"></div></div></div>
+              <div class="stat-bar-wrapper"><span>Capacity: <span id="totalCapacity" style="color:var(--green); font-weight:600;">0</span></span><div class="stat-bar-track"><div class="stat-bar-fill green" id="barCapacity" style="width:0%"></div></div></div>
+              <div class="stat-bar-wrapper"><span>Dig Strength: <span id="totalDigStrength" style="color:var(--pink); font-weight:600;">0</span></span><div class="stat-bar-track"><div class="stat-bar-fill pink" id="barDigStrength" style="width:0%"></div></div></div>
+              <div class="stat-bar-wrapper"><span>Dig Speed: <span id="totalDigSpeed" style="color:var(--purple); font-weight:600;">0</span></span><div class="stat-bar-track"><div class="stat-bar-fill purple" id="barDigSpeed" style="width:0%"></div></div></div>
             </div>
             <div id="mutationSummary" style="margin-top:6px; padding-top:6px; border-top:1px solid var(--border); font-size:0.75rem; color:var(--text-mid);"></div>
           </div>
@@ -2345,8 +2367,10 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         for (let i = 0; i < BuildBuilder.maxRings; i++) {
           const ring = BuildBuilder.slots.rings[i] || { name: '', mutation: 'None' };
           const div = document.createElement('div');
-          div.className = 'equip-slot';
+          const isEmpty = !ring.name;
+          div.className = 'equip-slot stagger-in' + (isEmpty ? ' empty' : '');
           div.style.cssText = 'background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px;';
+          div.style.animationDelay = '0ms';
           div.innerHTML = `
             <div style="font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-mid); margin-bottom:6px;">Ring ${i+1}</div>
             <select class="equip-select" data-slot="ring" data-index="${i}" style="width:100%; padding:6px 8px; background:var(--bg-card); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.85rem; margin-bottom:6px;">
@@ -2377,11 +2401,25 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         const spEl = document.getElementById('totalDigSpeed');
         const statsDiv = document.getElementById('buildStats');
         const mutSummary = document.getElementById('mutationSummary');
+        const barLuck = document.getElementById('barLuck');
+        const barCap = document.getElementById('barCapacity');
+        const barDS = document.getElementById('barDigStrength');
+        const barSP = document.getElementById('barDigSpeed');
 
-        if (luckEl) luckEl.textContent = stats.luck.toFixed(2);
-        if (capEl) capEl.textContent = stats.capacity.toFixed(2);
-        if (dsEl) dsEl.textContent = stats.digStrength.toFixed(2);
-        if (spEl) spEl.textContent = stats.digSpeed.toFixed(2);
+        // Animated number transitions
+        if (luckEl) animateValue(luckEl, _prevBuildStats.luck, stats.luck, 400, 2);
+        if (capEl) animateValue(capEl, _prevBuildStats.capacity, stats.capacity, 400, 2);
+        if (dsEl) animateValue(dsEl, _prevBuildStats.digStrength, stats.digStrength, 400, 2);
+        if (spEl) animateValue(spEl, _prevBuildStats.digSpeed, stats.digSpeed, 400, 2);
+
+        // Update mini bars (relative to estimated maxes: luck 500, cap 500, ds 200, sp 50)
+        if (barLuck) barLuck.style.width = Math.min(100, (stats.luck / 500) * 100) + '%';
+        if (barCap) barCap.style.width = Math.min(100, (stats.capacity / 500) * 100) + '%';
+        if (barDS) barDS.style.width = Math.min(100, (stats.digStrength / 200) * 100) + '%';
+        if (barSP) barSP.style.width = Math.min(100, (stats.digSpeed / 50) * 100) + '%';
+
+        // Store for next animation
+        _prevBuildStats = { luck: stats.luck, capacity: stats.capacity, digStrength: stats.digStrength, digSpeed: stats.digSpeed };
 
         // Show mutation summary
         if (mutSummary) {
@@ -2406,11 +2444,14 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         }
 
         if (statsDiv) {
-          // Show stats div if any equipment is selected
           const hasEquipment = BuildBuilder.slots.neck.name || 
                               BuildBuilder.slots.charm.name || 
                               BuildBuilder.slots.rings.some(r => r && r.name);
-          statsDiv.style.display = hasEquipment ? 'block' : 'none';
+          if (hasEquipment) {
+            statsDiv.classList.add('visible');
+          } else {
+            statsDiv.classList.remove('visible');
+          }
         }
 
         // Update individual slot stats
@@ -2507,6 +2548,18 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         statsEl.innerHTML = html;
       }
 
+      // Toggle empty class on equip slot
+      function toggleEmptySlot(slotEl) {
+        if (!slotEl) return;
+        const select = slotEl.querySelector('.equip-select');
+        if (!select) return;
+        if (!select.value) {
+          slotEl.classList.add('empty');
+        } else {
+          slotEl.classList.remove('empty');
+        }
+      }
+
       // Event listeners
       document.addEventListener('change', function(e) {
         const slot = e.target.dataset.slot;
@@ -2516,9 +2569,9 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           if (slot === 'neck') {
             BuildBuilder.slots.neck.name = e.target.value || null;
             BuildBuilder.slots.neck.mutation = 'None';
-            // Show/hide mutation selector
             const container = document.querySelector('#neckSlot .mutation-container');
             if (container) container.style.display = e.target.value ? 'block' : 'none';
+            toggleEmptySlot(document.getElementById('neckSlot'));
             updateBuildStats();
           }
           if (slot === 'charm') {
@@ -2526,6 +2579,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
             BuildBuilder.slots.charm.mutation = 'None';
             const container = document.querySelector('#charmSlot .mutation-container');
             if (container) container.style.display = e.target.value ? 'block' : 'none';
+            toggleEmptySlot(document.getElementById('charmSlot'));
             updateBuildStats();
           }
           if (slot === 'ring' && index !== undefined) {
@@ -2551,6 +2605,12 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           }
         }
       });
+      
+      // Initial empty state for neck/charm
+      setTimeout(function() {
+        toggleEmptySlot(document.getElementById('neckSlot'));
+        toggleEmptySlot(document.getElementById('charmSlot'));
+      }, 600);
 
       // Generate code button
       document.addEventListener('click', function(e) {
@@ -2560,10 +2620,17 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           if (output) {
             output.textContent = code;
             output.style.display = 'block';
-            navigator.clipboard.writeText(code).then(() => {
-              alert('Build code copied to clipboard!');
+            navigator.clipboard.writeText(code).then(function() {
+              showToast('Build code copied!', 'success');
             });
           }
+          // Flash effect on button
+          e.target.style.background = 'var(--green)';
+          e.target.style.color = 'var(--bg)';
+          setTimeout(function() {
+            e.target.style.background = '';
+            e.target.style.color = '';
+          }, 400);
           // Update URL hash for easy sharing
           window.location.hash = 'build=' + encodeURIComponent(code);
         }
@@ -2572,7 +2639,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (e.target.id === 'loadBuildBtn') {
           const input = document.getElementById('loadBuildInput');
           if (!input || !input.value.trim()) {
-            alert('Please paste a build code first!');
+            showToast('Paste a build code first!', 'error');
             return;
           }
           const success = BuildBuilder.loadFromCode(input.value.trim());
@@ -2583,9 +2650,9 @@ function animateValue(el, start, end, duration, decimalPlaces) {
             const maxRingsDisplay = document.getElementById('maxRingsDisplay');
             if (ringCountSelector) ringCountSelector.value = BuildBuilder.maxRings;
             if (maxRingsDisplay) maxRingsDisplay.textContent = BuildBuilder.maxRings;
-            alert('Build loaded successfully!');
+            showToast('Build loaded!', 'success');
           } else {
-            alert('Invalid build code!');
+            showToast('Invalid build code!', 'error');
           }
         }
       });
@@ -2611,5 +2678,274 @@ function animateValue(el, start, end, duration, decimalPlaces) {
       // Initial population
       setTimeout(populateEquipment, 500);
     })();
+
+// Tab switching
+(function() {
+  var tabNav = document.getElementById('mainTabs');
+  if (!tabNav) return;
+  tabNav.addEventListener('click', function(e) {
+    var btn = e.target.closest('.tabBtn');
+    if (!btn) return;
+    var tabId = btn.dataset.tab;
+    tabNav.querySelectorAll('.tabBtn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.tabContent').forEach(function(c) { c.classList.remove('active'); });
+    var tab = document.getElementById('tab-' + tabId);
+    if (tab) tab.classList.add('active');
+  });
+})();
+
+// Dredge Quest Guide
+(function() {
+  var mineralNames = [];
+  if (window.MINERALS_DATA && window.MINERALS_DATA.minerals) {
+    mineralNames = window.MINERALS_DATA.minerals.map(function(m) { return m.mineral; }).sort();
+  }
+
+  var questInputs = document.getElementById('questInputs');
+  var questResults = document.getElementById('questResults');
+  var questEmpty = document.getElementById('questEmpty');
+  var questResultCards = document.getElementById('questResultCards');
+  var questTotals = document.getElementById('questTotals');
+
+  var slots = [];
+  var slotData = [];
+
+  function getLuck() { return Math.max(0, Number(document.getElementById('luckInput') && document.getElementById('luckInput').value) || 0); }
+  function getCap() { return Math.max(1, Number(document.getElementById('capacityInput') && document.getElementById('capacityInput').value) || 1); }
+
+  var SEASONAL_KEYWORDS = ['Seasonal', 'Void', 'Hollow', 'Event', 'Limited', 'North Pole', 'Timelocked', 'Starfall'];
+  var blacklistEnabled = false;
+
+  function isBlacklisted(locationName) {
+    if (!blacklistEnabled) return false;
+    var lower = locationName.toLowerCase();
+    for (var i = 0; i < SEASONAL_KEYWORDS.length; i++) {
+      if (lower.indexOf(SEASONAL_KEYWORDS[i].toLowerCase()) !== -1) return true;
+    }
+    return false;
+  }
+
+  function getBestLocationsForOre(oreName) {
+    var minerals = window.MINERALS_DATA && window.MINERALS_DATA.minerals || [];
+    var m = minerals.find(function(x) { return x.mineral === oreName; });
+    if (!m || !m.locations || !m.locations.length) return [];
+    var luck = getLuck();
+    var C = getCap();
+    var rollsPerAttempt = luck * Math.sqrt(C);
+    var locs = m.locations.map(function(l) {
+      var base = Number(l.chance_percent) / 100;
+      var pAttempt = 1 - Math.pow(1 - base, rollsPerAttempt);
+      var pPerPan = pAttempt;
+      return {
+        name: l.location,
+        basePercent: Number(l.chance_percent),
+        pAttempt: pAttempt,
+        expectedPans: pPerPan > 0 ? 1 / pPerPan : Infinity,
+        region: l.region || ''
+      };
+    });
+    locs = locs.filter(function(l) { return !isBlacklisted(l.name); });
+    locs.sort(function(a, b) { return a.expectedPans - b.expectedPans; });
+    return locs;
+  }
+
+  function recalc() {
+    var validSlots = slotData.filter(function(s) { return s.name && s.amount > 0; });
+    if (validSlots.length === 0) {
+      questResults.style.display = 'none';
+      questEmpty.style.display = 'block';
+      return;
+    }
+    questEmpty.style.display = 'none';
+    questResults.style.display = 'block';
+
+    var totalPans = 0;
+    var cardHTML = '';
+
+    var luck = getLuck();
+    var C = getCap();
+    var rollsPerAttempt = luck * Math.sqrt(C);
+
+    // Find best combined spot (one location that covers multiple ores)
+    var allLocs = {};
+    validSlots.forEach(function(s) {
+      var locs = getBestLocationsForOre(s.name);
+      locs.forEach(function(l) {
+        if (!allLocs[l.name]) {
+          allLocs[l.name] = { name: l.name, ores: [], totalPans: 0 };
+        }
+        // Prevent duplicate ores for the same location (keep best only)
+        var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
+        var pansForOre = l.expectedPans * s.amount;
+        if (existingOreIdx === -1) {
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent });
+          allLocs[l.name].totalPans += pansForOre;
+        } else {
+          // Keep the better (lower pans) entry
+          var existingPans = allLocs[l.name].ores[existingOreIdx].pansTotal;
+          if (pansForOre < existingPans) {
+            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent };
+            allLocs[l.name].totalPans += (pansForOre - existingPans);
+          }
+        }
+      });
+    });
+
+    var locList = Object.values(allLocs);
+    locList.sort(function(a, b) { return a.totalPans - b.totalPans; });
+
+    var totalPans = Math.ceil(locList.reduce(function(s, l) { return s + l.totalPans; }, 0));
+
+    var multiSpot = locList.filter(function(l) { return l.ores.length > 1; })[0];
+    if (multiSpot && validSlots.length > 1) {
+      cardHTML += '<div style="background:rgba(0,229,255,0.06); border:1px solid var(--cyan); border-radius:8px; padding:10px; margin-bottom:12px;">';
+      cardHTML += '<div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">';
+      cardHTML += '<span style="font-size:1rem;">&#9733;</span>';
+      cardHTML += '<span style="font-weight:700; font-size:0.85rem; color:var(--cyan);">Best Combo Spot: ' + multiSpot.name + '</span>';
+      cardHTML += '<span style="font-size:0.72rem; color:var(--text-dim); margin-left:auto;">covers ' + multiSpot.ores.length + ' / ' + validSlots.length + ' ores</span>';
+      cardHTML += '</div>';
+      multiSpot.ores.forEach(function(o) {
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' &rarr; ~' + o.pansTotal.toLocaleString() + ' pans (' + o.basePercent.toFixed(4) + '%)</div>';
+      });
+      cardHTML += '</div>';
+    }
+
+    // Group by ore — one card per ore showing its top 3 locations
+    validSlots.forEach(function(s) {
+      var sNameLower = s.name.toLowerCase().trim();
+      // Search ALL locations (combo + single) for this ore
+      var oreLocs = Object.values(allLocs).filter(function(l) {
+        return l.ores.some(function(o) { return o.name.toLowerCase().trim() === sNameLower; });
+      }).sort(function(a, b) { return a.totalPans - b.totalPans; });
+      var oreData = oreLocs.length ? oreLocs[0].ores[0] : null;
+      var isFirst = validSlots.indexOf(s) === 0 && !multiSpot;
+
+      cardHTML += '<div style="background:var(--bg-input); border:1px solid var(--border); border-radius:8px; padding:10px; margin-bottom:8px;' + (isFirst ? ' border-color:var(--cyan);' : '') + '">';
+      cardHTML += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">';
+      cardHTML += '<span style="font-weight:700; font-size:0.85rem;">' + s.name + ' <span style="color:var(--text-dim); font-weight:400;">x' + s.amount + '</span></span>';
+      cardHTML += '<span style="font-size:0.75rem; color:var(--text-dim);">Need: ' + s.amount + ' &nbsp;|&nbsp; Est. <span style="color:var(--cyan); font-weight:600;">' + (oreData ? oreData.pansTotal.toLocaleString() : '—') + '</span> pans</span>';
+      cardHTML += '</div>';
+      if (!oreLocs.length) {
+        cardHTML += '<div style="font-size:0.72rem; color:var(--text-dim); font-style:italic;">No location data for "' + s.name + '"</div>';
+      } else {
+        oreLocs.slice(0, 3).forEach(function(loc, idx) {
+          var o = loc.ores[0];
+          var label = idx === 0 ? 'Best' : '#' + (idx + 1);
+          var color = idx === 0 ? 'var(--green)' : 'var(--text-mid)';
+          cardHTML += '<div style="font-size:0.72rem; padding:2px 0; color:' + color + ';">' + label + ': ' + loc.name + ' (' + o.basePercent.toFixed(4) + '%) &mdash; ~' + o.pansEach + ' pans each &rarr; ~' + o.pansTotal.toLocaleString() + ' total</div>';
+        });
+      }
+      cardHTML += '</div>';
+    });
+
+    questResultCards.innerHTML = cardHTML;
+
+    var cyclesPerMin = (function() {
+      var shake = Math.max(0, Number(document.getElementById('shakeSpeedInput') && document.getElementById('shakeSpeedInput').value) || 0);
+      var s = Math.max(0, Number(document.getElementById('sInput') && document.getElementById('sInput').value) || 0);
+      var n = Math.max(0, Number(document.getElementById('nInput') && document.getElementById('nInput').value) || 0);
+      var d = Math.max(0.0001, Number(document.getElementById('dInput') && document.getElementById('dInput').value) || 0.0001);
+      var r = (4.03266e-9 * Math.pow(shake, 3)) - (1.68935e-5 * Math.pow(shake, 2)) + (0.0255557 * shake) + 0.206594;
+      r = Math.max(0, r);
+      var rs = r * s;
+      if (rs <= 0) return 0;
+      var C2 = getCap();
+      var base = C2 / rs;
+      var method = document.getElementById('timeMethod') && document.getElementById('timeMethod').value;
+      var cycle = method === 'autopan' ? base + 1.5 + (190 * n / d) : base + 0.75 + (190 * Math.max(0, n - 1) / d);
+      return cycle > 0 ? 60 / cycle : 0;
+    })();
+
+    var mins = cyclesPerMin > 0 ? totalPans / cyclesPerMin : null;
+    var timeStr = mins !== null ? (mins >= 60 ? Math.floor(mins / 60) + 'h ' + Math.round(mins % 60) + 'm' : Math.round(mins) + 'm') : '—';
+
+    questTotals.innerHTML = '<div style="display:flex; gap:16px; flex-wrap:wrap;">' +
+      '<div>Total pans: <span style="color:var(--cyan); font-weight:700; font-size:1rem;">' + totalPans.toLocaleString() + '</span></div>' +
+      '<div>Est. time: <span style="color:var(--green); font-weight:700; font-size:1rem;">' + timeStr + '</span></div>' +
+      '<div style="font-size:0.7rem; color:var(--text-dim); margin-left:auto; align-self:center;">Luck: ' + getLuck() + ' &nbsp; Cap: ' + getCap() + '</div>' +
+    '</div>';
+  }
+
+  function rarityColorFn(r) {
+    switch(r) {
+      case 'common': return '#a3a3a3';
+      case 'uncommon': return '#22c55e';
+      case 'rare': return '#3b82f6';
+      case 'epic': return '#a855f7';
+      case 'legendary': return '#f59e0b';
+      case 'mythic': return '#cf0064';
+      case 'mythical': return '#cf0064';
+      case 'exotic': return '#ff0011';
+      case 'ascended': return '#eceee0';
+      default: return '#7c8cff';
+    }
+  }
+
+  function buildUI() {
+    questInputs.innerHTML = '';
+    slots = [];
+    slotData = [];
+
+    for (var i = 0; i < 3; i++) {
+      var div = document.createElement('div');
+      div.style.cssText = 'display:flex; flex-direction:column; gap:4px;';
+
+      var selectWrap = document.createElement('div');
+      selectWrap.style.cssText = 'position:relative;';
+
+      var sel = document.createElement('select');
+      sel.style.cssText = 'width:100%; padding:6px 28px 6px 8px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.8rem; appearance:none; cursor:pointer;';
+      sel.innerHTML = '<option value="">Ore ' + (i+1) + '</option>' + mineralNames.map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
+      sel.addEventListener('change', function(idx) {
+        return function() {
+          slotData[idx].name = this.value;
+          if (this.value) slotData[idx].amount = 0;
+          recalc();
+        };
+      }(i));
+
+      var inp = document.createElement('input');
+      inp.type = 'number';
+      inp.min = '1';
+      inp.placeholder = 'Amount';
+      inp.style.cssText = 'width:100%; padding:6px 8px; background:var(--bg-input); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.8rem;';
+      inp.addEventListener('input', function(idx) {
+        return function() {
+          slotData[idx].amount = Math.max(0, parseInt(this.value) || 0);
+          recalc();
+        };
+      }(i));
+
+      slots.push({ sel: sel, inp: inp, wrap: div });
+      slotData.push({ name: '', amount: 0 });
+
+      div.appendChild(sel);
+      div.appendChild(inp);
+      questInputs.appendChild(div);
+    }
+  }
+
+  document.addEventListener('input', function(e) {
+    var watchers = ['luckInput','capacityInput','shakeSpeedInput','sInput','nInput','dInput','timeMethod'];
+    if (watchers.indexOf(e.target.id) !== -1) recalc();
+  });
+
+  document.addEventListener('change', function(e) {
+    if (e.target.id === 'luckInput' || e.target.id === 'capacityInput' || e.target.id === 'blacklistSeasonal') recalc();
+  });
+
+  buildUI();
+
+  var blacklistCheck = document.getElementById('blacklistSeasonal');
+  if (blacklistCheck) {
+    blacklistCheck.addEventListener('change', function() {
+      blacklistEnabled = this.checked;
+      recalc();
+    });
+  }
+
+  recalc();
+})();
 
 // We'll patch the display updates directly in the metric elements
