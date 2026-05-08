@@ -2779,13 +2779,13 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         var existingOreIdx = allLocs[l.name].ores.findIndex(function(o) { return o.name === s.name; });
         var pansForOre = l.expectedPans * s.amount;
         if (existingOreIdx === -1) {
-          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent, pAttempt: l.pAttempt });
+          allLocs[l.name].ores.push({ name: s.name, amount: s.amount, pansEach: l.expectedPans, pansTotal: Math.ceil(l.expectedPans * s.amount), basePercent: l.basePercent, pAttempt: l.pAttempt });
           allLocs[l.name].totalPans += pansForOre;
         } else {
           // Keep the better (lower pans) entry
           var existingPans = allLocs[l.name].ores[existingOreIdx].pansTotal;
           if (pansForOre < existingPans) {
-            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: Math.round(l.expectedPans), pansTotal: Math.ceil(pansForOre), basePercent: l.basePercent, pAttempt: l.pAttempt };
+            allLocs[l.name].ores[existingOreIdx] = { name: s.name, amount: s.amount, pansEach: l.expectedPans, pansTotal: Math.ceil(l.expectedPans * s.amount), basePercent: l.basePercent, pAttempt: l.pAttempt };
             allLocs[l.name].totalPans += (pansForOre - existingPans);
           }
         }
