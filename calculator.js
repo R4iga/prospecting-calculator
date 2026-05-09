@@ -1702,7 +1702,6 @@ function showBuildDetails(build){
     strategy.forEach(s => {
       const usageText = s.usageCount > 1 ? ` (used in ${s.usageCount} items)` : '';
       if (s.location) {
-if (s.location) {
     if (s.digs === Infinity) {
         html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
     } else {
@@ -1766,16 +1765,13 @@ document.addEventListener("click", (e) => {
     strategy.forEach(s => {
 if (s.location) {
     if (s.digs === Infinity) {
-        html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, impossible with current stats)</li>`;
+        text += `/ ${s.amount}/ ${s.material} ? ${s.location} (${s.chance}% base, impossible with current stats)\n`;
     } else {
-        html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)</li>`;
+        text += `/ ${s.amount}/ ${s.material} ? ${s.location} (${s.chance}% base, ${s.chancePerAttempt}% w/ your stats, ~${s.digs} digs, ~${s.timeMin} min)\n`;
     }
 } else {
-    html += `<li><strong>${s.amount} / ${s.material}</strong>${usageText} ? location unknown</li>`;
+    text += `/ ${s.amount}/ ${s.material} ? location unknown\n`;
 }
-      } else {
-        text += `ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.amount}ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${s.material} ? location unknown\n`;
-      }
     });
     navigator.clipboard.writeText(text).then(() => {
       const btn = e.target;
@@ -2472,7 +2468,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (slot.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (ÃƒÂ¯Ã‚Â¿Ã‚Â½${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${slot.mutation} (x${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
@@ -2519,7 +2515,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         if (spFinal > 0) html += `<span style="color:var(--purple);">SP: ${spFinal.toFixed(1)}</span> `;
         
         if (ring.mutation !== 'None') {
-          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (ÃƒÂ¯Ã‚Â¿Ã‚Â½${mutationData.multiplier})</span>`;
+          html += `<span style="color:var(--yellow); font-size:0.7rem; margin-left:4px;">${ring.mutation} (x${mutationData.multiplier})</span>`;
         }
 
         statsEl.innerHTML = html;
