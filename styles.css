@@ -1869,7 +1869,7 @@ input:focus, select:focus {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  animation: disFadeIn 0.4s var(--ease);
+  animation: disFadeIn 0.35s ease;
 }
 
 @keyframes disFadeIn {
@@ -1880,72 +1880,71 @@ input:focus, select:focus {
 #disclaimer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(6,8,13,0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(10,12,20,0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 #disclaimer-box {
   position: relative;
-  max-width: 520px;
+  max-width: 480px;
   width: 90%;
-  padding: 52px 44px 44px;
+  padding: 44px 40px 36px;
   text-align: center;
-  animation: disSlide 0.5s var(--ease);
+  animation: disSlide 0.4s ease;
   cursor: default;
 }
 
 @keyframes disSlide {
-  from { opacity: 0; transform: translateY(24px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 #disclaimer-box h1 {
-  font-size: 2.6rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  color: var(--cyan);
-  text-shadow: 0 0 40px var(--cyan-glow), 0 0 80px rgba(0,229,255,0.08);
-  margin: 0 0 18px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin: 0 0 16px;
+  text-transform: uppercase;
 }
 
 #disclaimer-box p {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  color: var(--text);
-  margin: 0 0 8px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-mid);
+  margin: 0 0 6px;
 }
 
 #disclaimer-box p.dim {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-dim);
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 #disclaimer-box strong {
-  color: var(--cyan);
+  color: var(--text);
+  font-weight: 600;
 }
 
 #disclaimer-dismiss {
   display: inline-block;
-  padding: 12px 40px;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--cyan);
-  color: var(--bg);
+  padding: 10px 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-mid);
   font-family: inherit;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 #disclaimer-dismiss:hover {
-  box-shadow: 0 0 24px var(--cyan-glow);
-  transform: scale(1.04);
-}
-#disclaimer-dismiss:active {
-  transform: scale(0.97);
+  border-color: var(--text-dim);
+  color: var(--text);
+  background: rgba(255,255,255,0.03);
 }
 
 
