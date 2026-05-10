@@ -971,6 +971,66 @@ select.c-cool.sm {
   opacity: 0.6;
 }
 
+/* Trigger button */
+.c-cool-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 36px 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.c-cool-trigger:hover {
+  border-color: var(--border-active);
+  background-color: var(--bg-hover);
+}
+
+.c-cool-trigger.open {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px var(--cyan-dim), 0 0 16px rgba(0,229,255,0.08);
+}
+
+.c-cool-trigger .c-cool-arrow {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: transform var(--dur-base) var(--ease);
+}
+
+.c-cool-trigger.open .c-cool-arrow {
+  transform: rotate(180deg);
+}
+
+/* Hide native select when wrapped */
+.c-cool-wrap select.c-cool {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Small trigger variant */
+.c-cool-trigger.sm {
+  padding: 6px 30px 6px 10px;
+  font-size: var(--text-sm);
+}
+
 /* =======================
    TOGGLE
    ======================= */
