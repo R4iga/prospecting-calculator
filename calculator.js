@@ -2401,16 +2401,16 @@ function animateValue(el, start, end, duration, decimalPlaces) {
           const charm = BuildBuilder.slots.charm || {};
           if (neck.name && neck.mutation && neck.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[neck.mutation];
-            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Neck: ' + neck.mutation + ' (×' + mutData.multiplier + ')');
           }
           if (charm.name && charm.mutation && charm.mutation !== 'None') {
             const mutData = BuildBuilder.mutations[charm.mutation];
-            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
+            if (mutData) mutations.push('Charm: ' + charm.mutation + ' (×' + mutData.multiplier + ')');
           }
           BuildBuilder.slots.rings.forEach((ring, i) => {
             if (ring && ring.name && ring.mutation && ring.mutation !== 'None') {
               const mutData = BuildBuilder.mutations[ring.mutation];
-              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (ÃƒÆ’Ã¢â‚¬â€' + mutData.multiplier + ')');
+              if (mutData) mutations.push('Ring ' + (i+1) + ': ' + ring.mutation + ' (×' + mutData.multiplier + ')');
             }
           });
           mutSummary.innerHTML = mutations.length > 0 ? '<div style="font-weight:600; margin-bottom:4px;">Active Mutations:</div>' + mutations.join('<br>') : '';
@@ -2766,7 +2766,7 @@ function animateValue(el, start, end, duration, decimalPlaces) {
         var luckNeeded = Math.abs(Math.log(0.5) / (Math.log(1 - o.basePercent / 100) * Math.sqrt(C)));
         var diff = luckNeeded - luck;
         var diffStr = diff > 0 ? ' <span style="color:var(--yellow);">(+' + Math.ceil(diff).toLocaleString() + '</span>' : '';
-        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' Ãƒ—Ã¢â€šÂ¬Ã¢â‚¬Â <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
+        cardHTML += '<div style="font-size:0.75rem; padding:2px 0; color:var(--text-mid);"> &bull; ' + o.name + ' x' + o.amount + ' — <span style="color:var(--text-dim);">Luck ' + Math.ceil(luckNeeded).toLocaleString() + diffStr + ' for 50%</span></div>';
       });
       cardHTML += '</div>';
     }
