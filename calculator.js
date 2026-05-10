@@ -229,7 +229,7 @@ function getCycleSeconds(C) {
 
    Displayed as 99%, but uses the pity formula:
 
-   (5 x odds) ÃƒÂ¯Ã‚Â¿Ã‚Â½ ((1.5 x luck x vcapacity) ÃƒÂ¯Ã‚Â¿Ã‚Â½ cycle time)
+   (5 x odds) · ((1.5 x luck x vcapacity) · cycle time)
 
 
 
@@ -628,7 +628,7 @@ function calculate() {
 
     rollsNote.textContent =
 
-      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} ÃƒÂ¯Ã‚Â¿Ã‚Â½ Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s ÃƒÂ¯Ã‚Â¿Ã‚Â½ s=${s.toFixed(2)} ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${cycleFormulaText} ÃƒÂ¯Ã‚Â¿Ã‚Â½ Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
+      `Rolls/pan: ${rollsPerAttempt.toFixed(2)} · Shake ${shakeSpeed}% ? ${r.toFixed(2)}/s · s=${s.toFixed(2)} · ${cycleFormulaText} · Time: ${isFinite(cycleSeconds) ? cycleSeconds.toFixed(2) + "s" : "8"} · ${isFinite(pansPerMinute) ? pansPerMinute.toFixed(1) + " pans/min" : "-"}`;
 
   }
 
@@ -716,7 +716,7 @@ function calculate() {
 
     atLeastSub.textContent =
 
-      `Chance of =1 in one attempt ÃƒÂ¯Ã‚Â¿Ã‚Â½ 99% time: ${fmtDuration(time99)}`;
+      `Chance of =1 in one attempt · 99% time: ${fmtDuration(time99)}`;
 
   }
 
@@ -762,7 +762,7 @@ function calculate() {
 
   if (farmValueEl) farmValueEl.textContent = isFinite(totalValue) ? fmtMoney(totalValue) : "-";
 
-  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg ÃƒÂ¯Ã‚Â¿Ã‚Â½ ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
+  if (farmValueSub) farmValueSub.textContent = `~${avgSizePerFind.toFixed(1)}kg avg · ${fmtMoney(valuePerPerKg(valuePerKg))}/kg`;
 
 
 
@@ -1177,7 +1177,7 @@ const BUILDS = {
 
       rings: ["1x Ring of Champions", "4x/3x Umbrite Ring", "5x/3x Umbrite Ring", "4x/3x Otherworldly Ring", "2x/1x Purifying Ring"],
 
-      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "ÃƒÂ¯Ã‚Â¿Ã‚Â½ Use Abyssal Shovel for 6 rings no-RoC"]
+      notes: ["? Replace 1 with Purifying Ring for Fungal Marsh", "? Replace 1 with Dredge Master's Ring (no-RoC)", "· Use Abyssal Shovel for 6 rings no-RoC"]
 
     },
 
@@ -1197,7 +1197,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Pumpkin LordÃƒÂ¯Ã‚Â¿Ã‚Â½ (fallback: Helm of the Round)",
+      charm: "Pumpkin Lord· (fallback: Helm of the Round)",
 
       neck: "Frostthorn Pendant",
 
@@ -1209,9 +1209,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Blightflow (or GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½)", enchant: "Cosmic" },
+    pan: { name: "Blightflow (or Galactic·)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Venomspade)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Cane· (or Venomspade)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1301,7 +1301,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Clockwork (fallback: Pumpkin LordÃƒÂ¯Ã‚Â¿Ã‚Â½)",
+      charm: "Clockwork (fallback: Pumpkin Lord·)",
 
       neck: "Meteor Core",
 
@@ -1313,9 +1313,9 @@ const BUILDS = {
 
     runes: ["Mountain Climber", "Summit Seeker", "Speed I", "Sunblessed/Abyssal", "Volcanic/Solitude"],
 
-    pan: { name: "Nebula (or GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½)", enchant: "Cosmic" },
+    pan: { name: "Nebula (or Galactic·)", enchant: "Cosmic" },
 
-    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Starcrusher)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Cane· (or Starcrusher)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1329,7 +1329,7 @@ const BUILDS = {
 
       charm: "Clockwork (fallback: Royal Federation Crown)",
 
-      neck: "Santa's BagÃƒÂ¯Ã‚Â¿Ã‚Â½ (fallback: Venomshank)",
+      neck: "Santa's Bag· (fallback: Venomshank)",
 
       rings: ["Ring of Champions", "4x/2x Otherworldly Ring", "2x Apocalypse Bringer", "1x Umbrite Ring"],
 
@@ -1339,9 +1339,9 @@ const BUILDS = {
 
     runes: ["Summit Seeker", "Mountain Climber", "Speed I", "Solitude", "Abyssal/Sunblessed"],
 
-    pan: { name: "GalacticÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Blightflow)", enchant: "Midas" },
+    pan: { name: "Galactic· (or Blightflow)", enchant: "Midas" },
 
-    shovel: { name: "Candy CaneÃƒÂ¯Ã‚Â¿Ã‚Â½ (or Abyssal)", enchant: "Non-Euclidean" }
+    shovel: { name: "Candy Cane· (or Abyssal)", enchant: "Non-Euclidean" }
 
   },
 
@@ -1485,7 +1485,7 @@ const BUILDS = {
 
       charm: "Royal Federation Crown",
 
-      neck: "Amethyst Pendant | Spider BowtieÃƒÂ¯Ã‚Â¿Ã‚Â½",
+      neck: "Amethyst Pendant | Spider Bowtie·",
 
       rings: ["8x/6x Apocalypse Bringer"],
 
@@ -1509,7 +1509,7 @@ const BUILDS = {
 
     equipment: {
 
-      charm: "Antlers of Life | Witch HatÃƒÂ¯Ã‚Â¿Ã‚Â½",
+      charm: "Antlers of Life | Witch Hat·",
 
       neck: "Frostthorn Pendant",
 
@@ -1595,7 +1595,7 @@ function extractEquipName(str){
 
   let name = str.replace(/[\dx/]+\s*/, "").trim();
 
-  name = name.split('(')[0].split('mutation:')[0].split('ÃƒÂ¯Ã‚Â¿Ã‚Â½')[0].split('|')[0].trim();
+  name = name.split('(')[0].split('mutation:')[0].split('·')[0].split('|')[0].trim();
 
   return name;
 
@@ -2886,4 +2886,188 @@ buildUI();
   }
 })();
 
-// We'll patch the display updates directly in the metric elements
+// ── Custom searchable dropdowns (c-cool) ──
+function initCoolSelects() {
+  document.querySelectorAll("select.c-cool").forEach(function(sel) {
+    if (sel.parentNode.classList.contains("c-cool-wrap")) return;
+    var wrap = document.createElement("div");
+    wrap.className = "c-cool-wrap";
+
+    var trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "c-cool-trigger";
+    trigger.setAttribute("aria-haspopup", "listbox");
+
+    var label = document.createElement("span");
+    label.className = "c-cool-label";
+    trigger.appendChild(label);
+
+    var arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    arrow.setAttribute("class", "c-cool-arrow");
+    arrow.setAttribute("viewBox", "0 0 12 12");
+    arrow.setAttribute("width", "12");
+    arrow.setAttribute("height", "12");
+    var arrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    arrowPath.setAttribute("d", "M6 8.5L2 4h8z");
+    arrowPath.setAttribute("fill", "currentColor");
+    arrow.appendChild(arrowPath);
+    trigger.appendChild(arrow);
+
+    var menu = document.createElement("div");
+    menu.className = "c-cool-menu";
+    menu.style.display = "none";
+
+    var search = document.createElement("input");
+    search.type = "text";
+    search.className = "c-cool-search";
+    search.placeholder = "Search...";
+    menu.appendChild(search);
+
+    var optContainer = document.createElement("div");
+    optContainer.className = "c-cool-options";
+    menu.appendChild(optContainer);
+
+    var emptyMsg = document.createElement("div");
+    emptyMsg.className = "c-cool-empty";
+    emptyMsg.textContent = "No results";
+    menu.appendChild(emptyMsg);
+
+    var hint = document.createElement("div");
+    hint.className = "c-cool-hint";
+    menu.appendChild(hint);
+
+    function getRarityColor(opt) {
+      var r = opt.getAttribute("data-rarity") || "";
+      var map = { common: "#9a9a9a", uncommon: "#4ade80", rare: "#60a5fa", epic: "#a78bfa", legendary: "#fb923c", mythic: "#f472b6", exotic: "#00e5ff", ascended: "#ff2d95" };
+      return map[r] || "";
+    }
+
+    function buildOptions(filter) {
+      optContainer.innerHTML = "";
+      var visible = 0;
+      var groups = sel.querySelectorAll("optgroup, option");
+      var currentGroup = null;
+      groups.forEach(function(node) {
+        if (node.tagName === "OPTGROUP") {
+          currentGroup = node.label;
+          return;
+        }
+        if (node.tagName !== "OPTION") return;
+        if (!node.value) return;
+        var text = node.textContent;
+        var q = (filter || "").toLowerCase();
+        if (q && text.toLowerCase().indexOf(q) === -1) return;
+        var optEl = document.createElement("div");
+        optEl.className = "c-cool-opt";
+        optEl.setAttribute("role", "option");
+        optEl.dataset.value = node.value;
+        if (node.selected) optEl.classList.add("selected");
+        var dot = document.createElement("span");
+        dot.className = "c-dot";
+        var c = getRarityColor(node);
+        if (c) dot.style.background = c;
+        optEl.appendChild(dot);
+        var txt = document.createElement("span");
+        if (currentGroup) txt.textContent = text + " (" + currentGroup + ")";
+        else txt.textContent = text;
+        optEl.appendChild(txt);
+        var check = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        check.setAttribute("class", "c-check");
+        check.setAttribute("viewBox", "0 0 16 16");
+        check.setAttribute("width", "14");
+        check.setAttribute("height", "14");
+        var checkPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        checkPath.setAttribute("d", "M13 4L6 11l-3-3");
+        checkPath.setAttribute("fill", "none");
+        checkPath.setAttribute("stroke", "currentColor");
+        checkPath.setAttribute("stroke-width", "2");
+        checkPath.setAttribute("stroke-linecap", "round");
+        checkPath.setAttribute("stroke-linejoin", "round");
+        check.appendChild(checkPath);
+        optEl.appendChild(check);
+        optEl.addEventListener("mousedown", function(e) {
+          e.preventDefault();
+          sel.value = node.value;
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+          closeMenu();
+        });
+        optContainer.appendChild(optEl);
+        visible++;
+      });
+      emptyMsg.style.display = visible ? "none" : "block";
+      hint.textContent = visible + " option" + (visible !== 1 ? "s" : "");
+    }
+
+    function updateTrigger() {
+      var opt = sel.options[sel.selectedIndex];
+      label.textContent = opt ? opt.textContent : "";
+      var opts = optContainer.querySelectorAll(".c-cool-opt");
+      opts.forEach(function(el) { el.classList.toggle("selected", el.dataset.value === sel.value); });
+    }
+
+    function openMenu() {
+      menu.style.display = "block";
+      trigger.classList.add("open");
+      search.value = "";
+      buildOptions("");
+      search.focus();
+      var selected = optContainer.querySelector(".c-cool-opt.selected");
+      if (selected) selected.scrollIntoView({ block: "nearest" });
+    }
+
+    function closeMenu() {
+      menu.style.display = "none";
+      trigger.classList.remove("open");
+      updateTrigger();
+    }
+
+    trigger.addEventListener("click", function() {
+      if (menu.style.display === "block") closeMenu(); else openMenu();
+    });
+
+    search.addEventListener("input", function() {
+      buildOptions(search.value);
+    });
+
+    search.addEventListener("keydown", function(e) {
+      var items = optContainer.querySelectorAll(".c-cool-opt:not([style*='display:none'])");
+      if (!items.length) return;
+      var idx = Array.prototype.indexOf.call(items, document.activeElement);
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        var next = Math.min(idx + 1, items.length - 1);
+        items[next].focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        var prev = Math.max(idx - 1, 0);
+        items[prev].focus();
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (idx >= 0) items[idx].click();
+      } else if (e.key === "Escape") {
+        closeMenu();
+        trigger.focus();
+      }
+    });
+
+    document.addEventListener("mousedown", function(e) {
+      if (menu.style.display !== "block") return;
+      if (!wrap.contains(e.target)) closeMenu();
+    });
+
+    sel.addEventListener("change", function() {
+      updateTrigger();
+    });
+
+    sel.parentNode.insertBefore(wrap, sel);
+    wrap.appendChild(trigger);
+    wrap.appendChild(menu);
+    wrap.appendChild(sel);
+    sel.classList.add("c-cool");
+    updateTrigger();
+    buildOptions("");
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initCoolSelects);
+initCoolSelects();
