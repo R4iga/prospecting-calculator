@@ -12,22 +12,24 @@
 <body>
   <div id="loader" style="position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s;"><div class="spinner"></div></div>
   <div id="disclaimer">
-    <div id="disclaimer-box">
-      <h1>DISCLAIMER</h1>
-      <p>If the website appears laggy, stuttering, or unresponsive,<br><strong>enable Hardware Acceleration</strong> in your browser settings.</p>
-      <p class="dim">(Usually found in System / Performance settings)</p>
-      <div id="disclaimer-dismiss">Click anywhere to close</div>
-    </div>
+    <span id="disclaimer-x">&times;</span>
+    <strong>Hardware Acceleration</strong> recommended if the site feels laggy
+    <span id="disclaimer-dismiss">OK</span>
   </div>
   <script>
     (function() {
-      var d = document.getElementById('disclaimer');
-      if (d) {
-        d.addEventListener('click', function() {
-          d.style.transition = 'opacity 0.3s';
-          d.style.opacity = '0';
-          setTimeout(function(){ d.style.display = 'none'; }, 300);
-        });
+      var dis = document.getElementById('disclaimer');
+      if (dis) {
+        function hide() {
+          dis.style.transition = 'opacity 0.3s, transform 0.3s';
+          dis.style.opacity = '0';
+          dis.style.transform = 'translateY(12px)';
+          setTimeout(function(){ dis.style.display = 'none'; }, 300);
+        }
+        var x = document.getElementById('disclaimer-x');
+        var ok = document.getElementById('disclaimer-dismiss');
+        if (x) x.addEventListener('click', hide);
+        if (ok) ok.addEventListener('click', hide);
       }
     })();
   </script>
