@@ -1869,7 +1869,7 @@ input:focus, select:focus {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  animation: disFadeIn 0.35s ease;
+  animation: disFadeIn 0.45s ease;
 }
 
 @keyframes disFadeIn {
@@ -1880,29 +1880,52 @@ input:focus, select:focus {
 #disclaimer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(10,12,20,0.88);
+  background: rgba(6,8,16,0.92);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+/* Scanning line sweep */
+#disclaimer-backdrop::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), rgba(0,229,255,0.4), rgba(0,229,255,0.2), transparent);
+  animation: scanLine 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanLine {
+  0% { top: -1px; }
+  50% { top: 100%; }
+  100% { top: -1px; }
 }
 
 #disclaimer-box {
   position: relative;
-  max-width: 480px;
+  max-width: 460px;
   width: 90%;
-  padding: 44px 40px 36px;
+  padding: 48px 44px 40px;
   text-align: center;
-  animation: disSlide 0.4s ease;
+  animation: disSlide 0.55s ease;
   cursor: default;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid rgba(0,229,255,0.08);
+  box-shadow: 0 0 60px rgba(0,229,255,0.04), 0 0 0 1px rgba(0,229,255,0.04);
 }
 
 @keyframes disSlide {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 #disclaimer-box h1 {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--text);
   margin: 0 0 16px;
@@ -1910,41 +1933,43 @@ input:focus, select:focus {
 }
 
 #disclaimer-box p {
-  font-size: 0.95rem;
-  line-height: 1.65;
+  font-size: 0.92rem;
+  line-height: 1.7;
   color: var(--text-mid);
   margin: 0 0 6px;
 }
 
 #disclaimer-box p.dim {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-dim);
   margin-bottom: 32px;
 }
 
 #disclaimer-box strong {
-  color: var(--text);
+  color: var(--cyan);
   font-weight: 600;
 }
 
 #disclaimer-dismiss {
   display: inline-block;
-  padding: 10px 36px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 10px 40px;
+  border: 1px solid rgba(0,229,255,0.12);
+  border-radius: 8px;
   background: transparent;
   color: var(--text-mid);
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition: border-color 0.3s, color 0.3s, background 0.3s, box-shadow 0.3s;
 }
 #disclaimer-dismiss:hover {
-  border-color: var(--text-dim);
-  color: var(--text);
-  background: rgba(255,255,255,0.03);
+  border-color: rgba(0,229,255,0.3);
+  color: var(--cyan);
+  background: rgba(0,229,255,0.04);
+  box-shadow: 0 0 24px rgba(0,229,255,0.08), inset 0 0 20px rgba(0,229,255,0.02);
 }
 
 
