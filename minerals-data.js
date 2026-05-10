@@ -1,51 +1,156 @@
 window.MINERALS_DATA = {
   "meta": {
     "game": "Prospecting",
-    "version": "1.0.0",
-    "lastUpdated": "2026-05-06",
+    "version": "1.1.0",
+    "lastUpdated": "2026-05-11",
     "source": "Manual compilation from Official Prospecting Miraheze Wiki"
   },
-
   "locations": [
-    { "id": "rubble_creek_sands", "name": "Rubble Creek Sands", "region": "Starter" },
-    { "id": "rubble_creek_deposits", "name": "Rubble Creek Deposits", "region": "Starter" },
-
-    { "id": "fortune_river", "name": "Fortune River", "region": "Riverlands" },
-    { "id": "fortune_river_delta", "name": "Fortune River Delta", "region": "Riverlands" },
-
-    { "id": "crystal_caverns", "name": "Crystal Caverns", "region": "Crystal" },
-    { "id": "crystal_cavern_river", "name": "Crystal Cavern River", "region": "Crystal" },
-    { "id": "azuralite_oasis", "name": "Azuralite Oasis", "region": "Crystal" },
-
-    { "id": "frostbite_river", "name": "Frostbite River", "region": "Frost" },
-    { "id": "frostbite_waterfall", "name": "Frostbite Waterfall", "region": "Frost" },
-    { "id": "frozen_peak", "name": "Frozen Peak", "region": "Frost" },
-
-    { "id": "overgrown_grotto", "name": "Overgrown Grotto", "region": "Nature" },
-    { "id": "deeproot_spring", "name": "Deeproot Spring", "region": "Nature" },
-    { "id": "fungal_marsh", "name": "Fungal Marsh", "region": "Nature" },
-    { "id": "rotwood_swamp", "name": "Rotwood Swamp", "region": "Nature" },
-    { "id": "timelocked_sanctuary", "name": "Timelocked Sanctuary", "region": "Nature"},
-    { "id": "haunted_creek", "name": "Haunted Creek", "region": "Nature" },
-
-    { "id": "sunset_beach", "name": "Sunset Beach", "region": "Coastal" },
-    { "id": "windswept_beach", "name": "Windswept Beach", "region": "Coastal" },
-
-    { "id": "volcanic_sands", "name": "Volcanic Sands", "region": "Volcanic" },
-    { "id": "the_magma_furnace", "name": "The Magma Furnace", "region": "Volcanic" },
-    { "id": "infernal_heart", "name": "Infernal Heart", "region": "Volcanic" },
-
-    { "id": "meteor_falls", "name": "Meteor Falls", "region": "Meteoric" },
-    { "id": "starfall_river", "name": "Starfall River", "region": "Meteoric" },
-    { "id": "astral_caverns", "name": "Astral Caverns", "region": "Meteoric" },
-
-    { "id": "abyssal_depths", "name": "Abyssal Depths", "region": "Dark" },
-
-    { "id": "enchanted_ruins", "name": "Enchanted Ruins", "region": "Ancient" },
-    { "id": "volcanic_springs", "name": "Volcanic Springs", "region": "Volcanic" },
-    { "id": "north_pole", "name": "North Pole", "region": "Frost" },
-
-    { "id": "the_void", "name": "The Void", "region": "Special" }
+    {
+      "id": "rubble_creek_sands",
+      "name": "Rubble Creek Sands",
+      "region": "Starter"
+    },
+    {
+      "id": "rubble_creek_deposits",
+      "name": "Rubble Creek Deposits",
+      "region": "Starter"
+    },
+    {
+      "id": "fortune_river",
+      "name": "Fortune River",
+      "region": "Riverlands"
+    },
+    {
+      "id": "fortune_river_delta",
+      "name": "Fortune River Delta",
+      "region": "Riverlands"
+    },
+    {
+      "id": "crystal_caverns",
+      "name": "Crystal Caverns",
+      "region": "Crystal"
+    },
+    {
+      "id": "crystal_cavern_river",
+      "name": "Crystal Cavern River",
+      "region": "Crystal"
+    },
+    {
+      "id": "azuralite_oasis",
+      "name": "Azuralite Oasis",
+      "region": "Crystal"
+    },
+    {
+      "id": "frostbite_river",
+      "name": "Frostbite River",
+      "region": "Frost"
+    },
+    {
+      "id": "frostbite_waterfall",
+      "name": "Frostbite Waterfall",
+      "region": "Frost"
+    },
+    {
+      "id": "frozen_peak",
+      "name": "Frozen Peak",
+      "region": "Frost"
+    },
+    {
+      "id": "overgrown_grotto",
+      "name": "Overgrown Grotto",
+      "region": "Nature"
+    },
+    {
+      "id": "deeproot_spring",
+      "name": "Deeproot Spring",
+      "region": "Nature"
+    },
+    {
+      "id": "fungal_marsh",
+      "name": "Fungal Marsh",
+      "region": "Nature"
+    },
+    {
+      "id": "rotwood_swamp",
+      "name": "Rotwood Swamp",
+      "region": "Nature"
+    },
+    {
+      "id": "timelocked_sanctuary",
+      "name": "Timelocked Sanctuary",
+      "region": "Nature"
+    },
+    {
+      "id": "haunted_creek",
+      "name": "Haunted Creek",
+      "region": "Nature"
+    },
+    {
+      "id": "sunset_beach",
+      "name": "Sunset Beach",
+      "region": "Coastal"
+    },
+    {
+      "id": "windswept_beach",
+      "name": "Windswept Beach",
+      "region": "Coastal"
+    },
+    {
+      "id": "volcanic_sands",
+      "name": "Volcanic Sands",
+      "region": "Volcanic"
+    },
+    {
+      "id": "the_magma_furnace",
+      "name": "The Magma Furnace",
+      "region": "Volcanic"
+    },
+    {
+      "id": "infernal_heart",
+      "name": "Infernal Heart",
+      "region": "Volcanic"
+    },
+    {
+      "id": "meteor_falls",
+      "name": "Meteor Falls",
+      "region": "Meteoric"
+    },
+    {
+      "id": "starfall_river",
+      "name": "Starfall River",
+      "region": "Meteoric"
+    },
+    {
+      "id": "astral_caverns",
+      "name": "Astral Caverns",
+      "region": "Meteoric"
+    },
+    {
+      "id": "abyssal_depths",
+      "name": "Abyssal Depths",
+      "region": "Dark"
+    },
+    {
+      "id": "enchanted_ruins",
+      "name": "Enchanted Ruins",
+      "region": "Ancient"
+    },
+    {
+      "id": "volcanic_springs",
+      "name": "Volcanic Springs",
+      "region": "Volcanic"
+    },
+    {
+      "id": "north_pole",
+      "name": "North Pole",
+      "region": "Frost"
+    },
+    {
+      "id": "the_void",
+      "name": "The Void",
+      "region": "Special"
+    }
   ],
   "minerals": [
     {
@@ -241,6 +346,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 18.1132
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -337,6 +450,10 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 18.1132
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
         }
       ]
     },
@@ -423,6 +540,10 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 18.1132
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -473,6 +594,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 1.8113
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -609,6 +738,10 @@ window.MINERALS_DATA = {
         {
           "location": "Starfall River",
           "chance_percent": 10.8507
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -663,6 +796,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 1.8113
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -773,6 +914,10 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 1.8113
+        },
+        {
+          "location": "Fortune River Delta",
+          "chance_percent": 0
         }
       ]
     },
@@ -1028,6 +1173,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.09057
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1071,6 +1224,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.09057
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1106,6 +1267,10 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.09057
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1450,7 +1615,7 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.002170
+          "chance_percent": 0.00217
         },
         {
           "location": "Rotwood Swamp",
@@ -1546,6 +1711,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.003623
+        },
+        {
+          "location": "Frostbite Waterfall",
+          "chance_percent": 0
+        },
+        {
+          "location": "Frozen Peak",
+          "chance_percent": 0
         }
       ]
     },
@@ -1634,11 +1807,19 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.004340
+          "chance_percent": 0.00434
         },
         {
           "location": "The Void",
           "chance_percent": 0.003623
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1724,6 +1905,14 @@ window.MINERALS_DATA = {
         {
           "location": "Meteor Falls",
           "chance_percent": 0.002712
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1775,6 +1964,14 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.003623
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -1871,11 +2068,11 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Starfall River",
-          "chance_percent": 0.00001085
+          "chance_percent": 1.085e-05
         },
         {
           "location": "Astral Caverns",
-          "chance_percent": 0.0000104
+          "chance_percent": 1.04e-05
         },
         {
           "location": "The Void",
@@ -1942,15 +2139,15 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Rubble Creek Sands",
-          "chance_percent": 0.00009376
+          "chance_percent": 9.376e-05
         },
         {
           "location": "Rubble Creek Deposits",
-          "chance_percent": 0.00007819
+          "chance_percent": 7.819e-05
         },
         {
           "location": "Fortune River",
-          "chance_percent": 0.00005739
+          "chance_percent": 5.739e-05
         },
         {
           "location": "The Void",
@@ -1981,7 +2178,15 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Frozen Peak",
-          "chance_percent": 0.00002574
+          "chance_percent": 2.574e-05
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2077,7 +2282,15 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.000005425
+          "chance_percent": 5.425e-06
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2205,19 +2418,19 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Overgrown Grotto",
-          "chance_percent": 0.000004668
+          "chance_percent": 4.668e-06
         },
         {
           "location": "Deeproot Spring",
-          "chance_percent": 0.000004518
+          "chance_percent": 4.518e-06
         },
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 0.000005837
+          "chance_percent": 5.837e-06
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 0.000005425
+          "chance_percent": 5.425e-06
         },
         {
           "location": "The Void",
@@ -2287,6 +2500,10 @@ window.MINERALS_DATA = {
         {
           "location": "The Void",
           "chance_percent": 0.0001811
+        },
+        {
+          "location": "Crystal Cavern River",
+          "chance_percent": 0
         }
       ]
     },
@@ -2301,23 +2518,31 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Azuralite Oasis",
-          "chance_percent": 0.00009245
+          "chance_percent": 9.245e-05
         },
         {
           "location": "Crystal Cavern River",
-          "chance_percent": 0.00008462
+          "chance_percent": 8.462e-05
         },
         {
           "location": "Fortune River Delta",
-          "chance_percent": 0.00008207
+          "chance_percent": 8.207e-05
         },
         {
           "location": "Fortune River",
-          "chance_percent": 0.00002296
+          "chance_percent": 2.296e-05
         },
         {
           "location": "The Void",
           "chance_percent": 0.0001811
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2351,7 +2576,7 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.00005425
+          "chance_percent": 5.425e-05
         }
       ]
     },
@@ -2444,31 +2669,31 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Azuralite Oasis",
-          "chance_percent": 0.00009245
+          "chance_percent": 9.245e-05
         },
         {
           "location": "Crystal Cavern River",
-          "chance_percent": 0.00008462
+          "chance_percent": 8.462e-05
         },
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 0.00005837
+          "chance_percent": 5.837e-05
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 0.00005425
+          "chance_percent": 5.425e-05
         },
         {
           "location": "Abyssal Depths",
-          "chance_percent": 0.00004846
+          "chance_percent": 4.846e-05
         },
         {
           "location": "Overgrown Grotto",
-          "chance_percent": 0.00004667
+          "chance_percent": 4.667e-05
         },
         {
           "location": "Deeproot Spring",
-          "chance_percent": 0.00004517
+          "chance_percent": 4.517e-05
         },
         {
           "location": "The Void",
@@ -2491,7 +2716,7 @@ window.MINERALS_DATA = {
         },
         {
           "location": "Frozen Peak",
-          "chance_percent": 0.00003218
+          "chance_percent": 3.218e-05
         },
         {
           "location": "The Void",
@@ -2552,19 +2777,19 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Rotwood Swamp",
-          "chance_percent": 0.000002169
+          "chance_percent": 2.169e-06
         },
         {
           "location": "Deeproot Spring",
-          "chance_percent": 0.000001807
+          "chance_percent": 1.807e-06
         },
         {
           "location": "Overgrown Grotto",
-          "chance_percent": 0.0000014
+          "chance_percent": 1.4e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2575,23 +2800,23 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Infernal Heart",
-          "chance_percent": 0.00001105
+          "chance_percent": 1.105e-05
         },
         {
           "location": "The Magma Furnace",
-          "chance_percent": 0.000008536
+          "chance_percent": 8.536e-06
         },
         {
           "location": "Volcanic Sands",
-          "chance_percent": 0.000002788
+          "chance_percent": 2.788e-06
         },
         {
           "location": "Volcanic Springs",
-          "chance_percent": 0.000002742
+          "chance_percent": 2.742e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2602,19 +2827,19 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "North Pole",
-          "chance_percent": 0.000002234
+          "chance_percent": 2.234e-06
         },
         {
           "location": "Frostbite Waterfall",
-          "chance_percent": 0.000001609
+          "chance_percent": 1.609e-06
         },
         {
           "location": "Frozen Peak",
-          "chance_percent": 0.000001609
+          "chance_percent": 1.609e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2625,35 +2850,35 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Infernal Heart",
-          "chance_percent": 0.00001105
+          "chance_percent": 1.105e-05
         },
         {
           "location": "Windswept Beach",
-          "chance_percent": 0.00000904
+          "chance_percent": 9.04e-06
         },
         {
           "location": "Sunset Beach",
-          "chance_percent": 0.000008499
+          "chance_percent": 8.499e-06
         },
         {
           "location": "Volcanic Sands",
-          "chance_percent": 0.000007807
+          "chance_percent": 7.807e-06
         },
         {
           "location": "Volcanic Springs",
-          "chance_percent": 0.000007679
+          "chance_percent": 7.679e-06
         },
         {
           "location": "Azuralite Oasis",
-          "chance_percent": 0.000007395
+          "chance_percent": 7.395e-06
         },
         {
           "location": "Crystal Cavern River",
-          "chance_percent": 0.000006769
+          "chance_percent": 6.769e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2664,31 +2889,31 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Fungal Marsh",
-          "chance_percent": 0.000003797
+          "chance_percent": 3.797e-06
         },
         {
           "location": "Rotwood Swamp",
-          "chance_percent": 0.000003797
+          "chance_percent": 3.797e-06
         },
         {
           "location": "Frozen Peak",
-          "chance_percent": 0.000003218
+          "chance_percent": 3.218e-06
         },
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 0.000002919
+          "chance_percent": 2.919e-06
         },
         {
           "location": "Frostbite River",
-          "chance_percent": 0.000002575
+          "chance_percent": 2.575e-06
         },
         {
           "location": "Frostbite Waterfall",
-          "chance_percent": 0.000002575
+          "chance_percent": 2.575e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2699,35 +2924,35 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Sunset Beach",
-          "chance_percent": 0.00002267
+          "chance_percent": 2.267e-05
         },
         {
           "location": "Infernal Heart",
-          "chance_percent": 0.0000221
+          "chance_percent": 2.21e-05
         },
         {
           "location": "Fortune River Delta",
-          "chance_percent": 0.00002189
+          "chance_percent": 2.189e-05
         },
         {
           "location": "Fortune River",
-          "chance_percent": 0.00001722
+          "chance_percent": 1.722e-05
         },
         {
           "location": "Volcanic Springs",
-          "chance_percent": 0.00001645
+          "chance_percent": 1.645e-05
         },
         {
           "location": "Haunted Creek",
-          "chance_percent": 0.000003458
+          "chance_percent": 3.458e-06
         },
         {
           "location": "Abyssal Depths",
-          "chance_percent": 0.000002908
+          "chance_percent": 2.908e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2738,31 +2963,31 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Fortune River Delta",
-          "chance_percent": 0.00004377
+          "chance_percent": 4.377e-05
         },
         {
           "location": "Fortune River",
-          "chance_percent": 0.0000287
+          "chance_percent": 2.87e-05
         },
         {
           "location": "Volcanic Sands",
-          "chance_percent": 0.00002231
+          "chance_percent": 2.231e-05
         },
         {
           "location": "Rubble Creek Deposits",
-          "chance_percent": 0.00002085
+          "chance_percent": 2.085e-05
         },
         {
           "location": "Rubble Creek Sands",
-          "chance_percent": 0.00001875
+          "chance_percent": 1.875e-05
         },
         {
           "location": "North Pole",
-          "chance_percent": 0.00001117
+          "chance_percent": 1.117e-05
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2773,19 +2998,19 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Overgrown Grotto",
-          "chance_percent": 0.0000028
+          "chance_percent": 2.8e-06
         },
         {
           "location": "Azuralite Oasis",
-          "chance_percent": 0.000002773
+          "chance_percent": 2.773e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         },
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 0.0000007296
+          "chance_percent": 7.296e-07
         }
       ]
     },
@@ -2796,27 +3021,27 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Abyssal Depths",
-          "chance_percent": 0.000001454
+          "chance_percent": 1.454e-06
         },
         {
           "location": "Haunted Creek",
-          "chance_percent": 0.000001296
+          "chance_percent": 1.296e-06
         },
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 0.000001167
+          "chance_percent": 1.167e-06
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 0.000001085
+          "chance_percent": 1.085e-06
         },
         {
           "location": "Deeproot Spring",
-          "chance_percent": 9.036e-7
+          "chance_percent": 9.036e-07
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2827,15 +3052,19 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 8.138e-7
+          "chance_percent": 8.138e-07
         },
         {
           "location": "Fungal Marsh",
-          "chance_percent": 8.137e-7
+          "chance_percent": 8.137e-07
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2846,23 +3075,27 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 0.000001356
+          "chance_percent": 1.356e-06
         },
         {
           "location": "Fungal Marsh",
-          "chance_percent": 0.000001356
+          "chance_percent": 1.356e-06
         },
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.000001085
+          "chance_percent": 1.085e-06
         },
         {
           "location": "Rotwood Swamp",
-          "chance_percent": 0.000001084
+          "chance_percent": 1.084e-06
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
         }
       ]
     },
@@ -2873,7 +3106,15 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Meteor Falls",
-          "chance_percent": 5.425e-7
+          "chance_percent": 5.425e-07
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2884,39 +3125,47 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Windswept Beach",
-          "chance_percent": 0.00000904
+          "chance_percent": 9.04e-06
         },
         {
           "location": "Frostbite River",
-          "chance_percent": 0.000008368
+          "chance_percent": 8.368e-06
         },
         {
           "location": "Frostbite Waterfall",
-          "chance_percent": 0.000008368
+          "chance_percent": 8.368e-06
         },
         {
           "location": "Fortune River Delta",
-          "chance_percent": 0.000008207
+          "chance_percent": 8.207e-06
         },
         {
           "location": "Azuralite Oasis",
-          "chance_percent": 0.000007395
+          "chance_percent": 7.395e-06
         },
         {
           "location": "Crystal Cavern River",
-          "chance_percent": 0.000006769
+          "chance_percent": 6.769e-06
         },
         {
           "location": "Haunted Creek",
-          "chance_percent": 0.000002161
+          "chance_percent": 2.161e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         },
         {
           "location": "Meteor Falls",
-          "chance_percent": 0.000001627
+          "chance_percent": 1.627e-06
+        },
+        {
+          "location": "Starfall River",
+          "chance_percent": 0
+        },
+        {
+          "location": "Astral Caverns",
+          "chance_percent": 0
         }
       ]
     },
@@ -2927,15 +3176,15 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Infernal Heart",
-          "chance_percent": 0.000004421
+          "chance_percent": 4.421e-06
         },
         {
           "location": "The Magma Furnace",
-          "chance_percent": 0.000002845
+          "chance_percent": 2.845e-06
         },
         {
           "location": "The Void",
-          "chance_percent": 0.000002536
+          "chance_percent": 2.536e-06
         }
       ]
     },
@@ -2946,7 +3195,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Enchanted Ruins",
-          "chance_percent": 1.167e-7
+          "chance_percent": 1.167e-07
         }
       ]
     },
@@ -2957,11 +3206,11 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Fungal Marsh",
-          "chance_percent": 4.339e-8
+          "chance_percent": 4.339e-08
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 4.34e-8
+          "chance_percent": 4.34e-08
         }
       ]
     },
@@ -2972,11 +3221,11 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Rotwood Swamp",
-          "chance_percent": 6.509e-8
+          "chance_percent": 6.509e-08
         },
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 5.425e-8
+          "chance_percent": 5.425e-08
         }
       ]
     },
@@ -2987,7 +3236,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Astral Caverns",
-          "chance_percent": 5.199e-9
+          "chance_percent": 5.199e-09
         }
       ]
     },
@@ -2998,7 +3247,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Frozen Peak",
-          "chance_percent": 6.437e-7
+          "chance_percent": 6.437e-07
         }
       ]
     },
@@ -3009,7 +3258,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Infernal Heart",
-          "chance_percent": 0.000001842
+          "chance_percent": 1.842e-06
         }
       ]
     },
@@ -3020,7 +3269,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Timelocked Sanctuary",
-          "chance_percent": 2.712e-8
+          "chance_percent": 2.712e-08
         }
       ]
     },
@@ -3031,7 +3280,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "North Pole",
-          "chance_percent": 2.792e-7
+          "chance_percent": 2.792e-07
         }
       ]
     },
@@ -3042,7 +3291,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Haunted Creek",
-          "chance_percent": 4.322e-7
+          "chance_percent": 4.322e-07
         }
       ]
     },
@@ -3053,7 +3302,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Starfall River",
-          "chance_percent": 1.085e-8
+          "chance_percent": 1.085e-08
         }
       ]
     },
@@ -3064,7 +3313,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Meteor Falls",
-          "chance_percent": 2.170e-8
+          "chance_percent": 2.17e-08
         }
       ]
     },
@@ -3075,7 +3324,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Abyssal Depths",
-          "chance_percent": 1.211e-7
+          "chance_percent": 1.211e-07
         }
       ]
     },
@@ -3086,7 +3335,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "Deeproot Spring",
-          "chance_percent": 1.807e-7
+          "chance_percent": 1.807e-07
         }
       ]
     },
@@ -3097,7 +3346,7 @@ window.MINERALS_DATA = {
       "locations": [
         {
           "location": "The Void",
-          "chance_percent": 7.245e-7
+          "chance_percent": 7.245e-07
         }
       ]
     }
