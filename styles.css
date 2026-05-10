@@ -1860,64 +1860,92 @@ input:focus, select:focus {
   }
 }
 
-/* ── Disclaimer floating card ── */
+/* ── Disclaimer modal ── */
 #disclaimer {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  inset: 0;
   z-index: 99998;
   display: flex;
   align-items: center;
-  gap: 10px;
-  max-width: 420px;
-  padding: 14px 18px;
-  background: var(--bg-card);
-  border: 1px solid var(--cyan-dim);
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,255,0.06);
-  font-size: 0.82rem;
-  line-height: 1.4;
-  color: var(--text-mid);
+  justify-content: center;
+  cursor: pointer;
+  animation: disFadeIn 0.4s var(--ease);
+}
+
+@keyframes disFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#disclaimer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,8,13,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#disclaimer-box {
+  position: relative;
+  max-width: 520px;
+  width: 90%;
+  padding: 52px 44px 44px;
+  text-align: center;
   animation: disSlide 0.5s var(--ease);
   cursor: default;
 }
 
-#disclaimer strong {
-  color: var(--cyan);
-  white-space: nowrap;
-}
-
 @keyframes disSlide {
-  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  from { opacity: 0; transform: translateY(24px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-#disclaimer-x {
-  font-size: 1.2rem;
-  color: var(--text-dim);
-  cursor: pointer;
-  line-height: 1;
-  flex-shrink: 0;
+#disclaimer-box h1 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--cyan);
+  text-shadow: 0 0 40px var(--cyan-glow), 0 0 80px rgba(0,229,255,0.08);
+  margin: 0 0 18px;
 }
-#disclaimer-x:hover {
+
+#disclaimer-box p {
+  font-size: 1.15rem;
+  line-height: 1.7;
   color: var(--text);
+  margin: 0 0 8px;
+}
+
+#disclaimer-box p.dim {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+}
+
+#disclaimer-box strong {
+  color: var(--cyan);
 }
 
 #disclaimer-dismiss {
-  margin-left: auto;
-  flex-shrink: 0;
-  padding: 4px 12px;
-  border-radius: var(--radius-sm);
-  background: var(--cyan-dim);
-  color: var(--cyan);
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-block;
+  padding: 12px 40px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--cyan);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: background var(--dur-fast), box-shadow var(--dur-fast);
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
 }
 #disclaimer-dismiss:hover {
-  background: rgba(0,229,255,0.2);
-  box-shadow: 0 0 12px var(--cyan-glow);
+  box-shadow: 0 0 24px var(--cyan-glow);
+  transform: scale(1.04);
+}
+#disclaimer-dismiss:active {
+  transform: scale(0.97);
 }
 
 
