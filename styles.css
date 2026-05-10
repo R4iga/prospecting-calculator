@@ -1874,8 +1874,8 @@ input:focus, select:focus {
 #disclaimer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(4,6,14,0.8);
-  animation: disFade 0.4s ease;
+  background: rgba(4,6,14,0.78);
+  animation: disFade 0.35s ease;
 }
 
 @keyframes disFade {
@@ -1885,129 +1885,65 @@ input:focus, select:focus {
 
 #disclaimer-box {
   position: relative;
-  max-width: 430px;
+  max-width: 400px;
   width: 90%;
   text-align: center;
-  animation: disSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: disSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: default;
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1px solid rgba(0,229,255,0.06);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-}
-
-#disclaimer-icon {
-  width: 32px;
-  height: 32px;
-  margin: 40px auto 0;
-  display: block;
-  color: var(--cyan);
-  opacity: 0.6;
-  animation: disFade 0.4s ease 0.1s both;
-}
-
-#disclaimer-box h1 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--text);
-  margin: 0;
-  padding: 16px 36px 0;
-  text-transform: uppercase;
-  animation: disFade 0.4s ease 0.15s both;
-}
-
-#disclaimer-box h1::after {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 2px;
-  margin: 12px auto 0;
-  background: var(--cyan);
-  border-radius: 1px;
-  box-shadow: 0 0 8px var(--cyan-glow);
-}
-
-#disclaimer-box p {
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--text);
-  margin: 16px 0 0;
-  padding: 0 36px;
-  animation: disFade 0.4s ease 0.2s both;
-}
-
-#disclaimer-box p.dim {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  margin: 8px 0 0;
-  padding: 0 36px 32px;
-  animation: disFade 0.4s ease 0.25s both;
-}
-
-#disclaimer-box strong {
-  color: var(--cyan);
-  font-weight: 600;
-}
-
-#disclaimer-dismiss {
-  display: block;
-  width: 100%;
-  padding: 14px 0;
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.04);
-  background: transparent;
-  color: var(--text-dim);
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.2s, background 0.2s;
-  border-radius: 0 0 16px 16px;
-  animation: disFade 0.4s ease 0.3s both;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
 }
 
 @keyframes disSlide {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+#disclaimer-icon {
+  width: 28px;
+  height: 28px;
+  margin: 36px auto 0;
+  display: block;
+  color: var(--cyan);
+  opacity: 0.5;
+}
+
 #disclaimer-box h1 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--text);
-  margin: 0;
-  padding: 16px 36px 0;
+  margin: 14px 0 0;
+  padding: 0 32px;
   text-transform: uppercase;
 }
 
 #disclaimer-box h1::after {
   content: '';
   display: block;
-  width: 32px;
+  width: 28px;
   height: 2px;
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   background: var(--cyan);
   border-radius: 1px;
-  box-shadow: 0 0 8px var(--cyan-glow);
+  box-shadow: 0 0 6px var(--cyan-glow);
 }
 
 #disclaimer-box p {
-  font-size: 0.92rem;
-  line-height: 1.7;
+  font-size: 0.88rem;
+  line-height: 1.65;
   color: var(--text);
   margin: 16px 0 0;
-  padding: 0 36px;
+  padding: 0 32px;
 }
 
 #disclaimer-box p.dim {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-dim);
   margin: 8px 0 0;
-  padding: 0 36px 32px;
+  padding: 0 32px 28px;
 }
 
 #disclaimer-box strong {
@@ -2017,24 +1953,22 @@ input:focus, select:focus {
 
 #disclaimer-dismiss {
   display: block;
-  width: 100%;
-  padding: 14px 0;
+  width: calc(100% - 32px);
+  margin: 0 16px 16px;
+  padding: 11px 0;
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.04);
-  background: transparent;
-  color: var(--text-dim);
+  border-radius: 8px;
+  background: rgba(0,229,255,0.08);
+  color: var(--cyan);
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
-  border-radius: 0 0 16px 16px;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 #disclaimer-dismiss:hover {
-  color: var(--text);
-  background: rgba(255,255,255,0.02);
+  background: rgba(0,229,255,0.14);
+  box-shadow: 0 0 20px rgba(0,229,255,0.08);
 }
 
 
