@@ -1860,4 +1860,75 @@ input:focus, select:focus {
   }
 }
 
+/* ── Disclaimer overlay ── */
+#disclaimer {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6,8,13,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  animation: disFadeIn 0.4s var(--ease);
+}
+
+@keyframes disFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#disclaimer-box {
+  max-width: 520px;
+  width: 90%;
+  padding: 48px 40px;
+  text-align: center;
+  animation: disSlide 0.5s var(--ease);
+}
+
+@keyframes disSlide {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#disclaimer-box h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  text-shadow: 0 0 40px var(--cyan-glow), 0 0 80px rgba(0,229,255,0.08);
+  margin: 0 0 20px;
+}
+
+#disclaimer-box p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+#disclaimer-box p.dim {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+}
+
+#disclaimer-box strong {
+  color: var(--cyan);
+}
+
+#disclaimer-dismiss {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  opacity: 0.5;
+  animation: disPulse 2s ease-in-out infinite;
+}
+
+@keyframes disPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
 
